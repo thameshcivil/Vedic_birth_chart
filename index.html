@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vedic Birth Chart Generator</title>
+<link rel="stylesheet" href="style.css">
+
+<!-- PWA: lets Android/Chrome (and iOS Safari) install this as a home-screen app -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f172a">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Birth Chart">
+</head>
+<body>
+
+<button type="button" id="sectionsToggleBtn" class="sections-toggle-btn" title="Jump to a section">☰</button>
+
+<div class="top-bar">
+  <button type="button" id="editDetailsBtn" class="edit-details-btn hidden" title="Edit birth details">✎ <span id="editDetailsLabel">Edit Details</span></button>
+  <button type="button" id="themeToggle" title="Toggle dark/light mode">🌙</button>
+  <label id="langLabel" for="langSelect">Language</label>
+  <select id="langSelect"></select>
+</div>
+
+<div class="sections-sidebar collapsed" id="sectionsSidebar">
+  <div class="sections-sidebar-header">
+    <span id="sectionsSidebarTitle">Jump to Section</span>
+  </div>
+  <button type="button" class="sections-nav-item" data-goto="panchanga"><span id="secLabelPanchanga">Horoscope Summary</span> <span class="chevron">▼</span></button>
+  <button type="button" class="sections-nav-item" data-goto="table"><span id="secLabelTable">Planetary Positions</span> <span class="chevron">▼</span></button>
+  <button type="button" class="sections-nav-item" data-goto="kplords"><span id="secLabelKp">Star/Sub/Sub-Sub Lord</span> <span class="chevron">▼</span></button>
+  <button type="button" class="sections-nav-item" data-goto="rasi"><span id="secLabelRasi">Rasi Chart</span> <span class="chevron">▼</span></button>
+  <button type="button" class="sections-nav-item" data-goto="current"><span id="secLabelCurrent">Current Date &amp; Time</span> <span class="chevron">▼</span></button>
+  <button type="button" class="sections-nav-item" data-goto="sudarshana"><span id="secLabelSudarshana">Sudarshana Chakra</span> <span class="chevron">▼</span></button>
+  <button type="button" class="sections-nav-item" data-goto="dasha"><span id="secLabelDasha">Dasha &amp; Bhukti</span> <span class="chevron">▼</span></button>
+</div>
+
+<div class="page-wrap" id="pageWrap">
+  <div class="panel form-panel" id="formPanel">
+    <h1 id="appTitle">🪐 Vedic Birth Chart Generator</h1>
+    <p class="subtitle" id="appSubtitle">Enter birth details to generate the Rasi chart with Nakshatra &amp; Pada</p>
+
+    <form id="birthForm">
+      <div class="form-row">
+        <label id="nameLabel" for="personName">Name</label>
+        <input type="text" id="personName" placeholder="e.g. Priya">
+      </div>
+
+      <div class="form-row">
+        <label id="genderLabel" for="personGender">Gender</label>
+        <select id="personGender">
+          <option value="" id="genderOptNone">Prefer not to say</option>
+          <option value="female" id="genderOptFemale">Female</option>
+          <option value="male" id="genderOptMale">Male</option>
+          <option value="other" id="genderOptOther">Other</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label id="dobLabel">Date of Birth</label>
+        <div class="segmented" id="dateSegmented">
+          <input type="text" id="dd" class="seg seg-2" maxlength="2" inputmode="numeric" placeholder="DD" required>
+          <span class="seg-sep">/</span>
+          <input type="text" id="mm" class="seg seg-2" maxlength="2" inputmode="numeric" placeholder="MM" required>
+          <span class="seg-sep">/</span>
+          <input type="text" id="yyyy" class="seg seg-4" maxlength="4" inputmode="numeric" placeholder="YYYY" required>
+          <button type="button" class="now-btn" id="nowBtnDate" title="Use current date & time">↻</button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label id="tobLabel">Time of Birth</label>
+        <div class="segmented" id="timeSegmented">
+          <input type="text" id="hh" class="seg seg-2" maxlength="2" inputmode="numeric" placeholder="HH" required>
+          <span class="seg-sep">:</span>
+          <input type="text" id="min" class="seg seg-2" maxlength="2" inputmode="numeric" placeholder="MM" required>
+          <span class="seg-sep">:</span>
+          <input type="text" id="ss" class="seg seg-2" maxlength="2" inputmode="numeric" placeholder="SS" required>
+          <select id="ampm" class="seg-ampm">
+            <option value="AM">AM</option>
+            <option value="PM">PM</option>
+          </select>
+          <button type="button" class="now-btn" id="nowBtnTime" title="Use current date & time">↻</button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label id="tzLabel" for="tz">Timezone Offset (from UTC)</label>
+        <select id="tz" required>
+          <!-- filled by script.js -->
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label id="placeLabel" for="place">Birth Place (city name)</label>
+        <input type="text" id="place" placeholder="e.g. Chennai, India">
+        <button type="button" id="lookupBtn">Find Coordinates</button>
+      </div>
+
+      <div class="form-row coords">
+        <div>
+          <label id="latLabel" for="lat">Latitude</label>
+          <input type="number" id="lat" step="0.0001" placeholder="13.0827" required>
+        </div>
+        <div>
+          <label id="lonLabel" for="lon">Longitude</label>
+          <input type="number" id="lon" step="0.0001" placeholder="80.2707" required>
+        </div>
+      </div>
+
+      <p id="lookupStatus" class="status"></p>
+
+      <button type="submit" id="generateBtn">Generate Birth Chart</button>
+    </form>
+  </div>
+
+  <div class="panel current-location-panel" id="currentLocationPanel">
+    <h2 id="myLocationHeading">🌍 Current Sky, From Your Location</h2>
+    <p class="subtitle" id="myLocationSubtitle">See where the planets are right now, using your device's current location - no birth details needed.</p>
+    <button type="button" id="useMyLocationBtn" class="use-location-btn">📍 <span id="useMyLocationLabel">Use My Current Location</span></button>
+    <p class="status" id="myLocationStatus"></p>
+
+    <div id="myLocationResult" class="hidden">
+      <div class="charts-row">
+        <div class="current-chart-block">
+          <div id="myLocationChartGrid" class="chart-grid"></div>
+        </div>
+        <div class="current-chart-block">
+          <div id="myLocationCosmicChart" class="cosmic-chart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel result-panel result hidden" id="result">
+
+    <p class="person-banner hidden" id="personBanner"></p>
+
+    <section class="output-section" data-section="panchanga">
+      <h2 class="section-toggle" id="panchangaHeading"><span id="panchangaHeadingLabel">Horoscope Summary</span> <span class="chevron">▼</span></h2>
+      <div class="section-content">
+        <p class="panchanga-narrative" id="panchangaNarrative"></p>
+
+        <h3 class="sub-heading" id="weekdayBlurbHeading">About the Weekday</h3>
+        <p id="weekdayBlurb"></p>
+
+        <h3 class="sub-heading" id="starBlurbHeading">About the Birth Star</h3>
+        <p id="starBlurb"></p>
+
+        <h3 class="sub-heading" id="thidhiBlurbHeading">About the Thidhi (Lunar Day)</h3>
+        <p id="thidhiBlurb"></p>
+
+        <table class="summary-table" id="summaryTable"></table>
+      </div>
+    </section>
+
+    <section class="output-section" data-section="table">
+      <h2 class="section-toggle" id="tableHeading"><span id="tableHeadingLabel">Planetary Positions</span> <span class="chevron">▼</span></h2>
+      <div class="section-content">
+        <table id="planetTable">
+          <thead>
+            <tr>
+              <th id="thGraha">Graha</th>
+              <th id="thLon">Sidereal Longitude</th>
+              <th id="thRasi">Rasi</th>
+              <th id="thNak">Nakshatra</th>
+              <th id="thPada">Pada</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="output-section" data-section="kplords">
+      <h2 class="section-toggle" id="kpHeading"><span id="kpHeadingLabel">Star Lord / Sub-Lord / Sub-Sub-Lord</span> <span class="chevron">▼</span></h2>
+      <div class="section-content">
+        <table id="kpTable">
+          <thead>
+            <tr>
+              <th id="kpThGraha">Graha</th>
+              <th id="kpThStar">Star Lord</th>
+              <th id="kpThSub">Sub-Lord</th>
+              <th id="kpThSubSub">Sub-Sub-Lord</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="charts-row triple" id="mainChartsGroup">
+      <section class="output-section" data-section="rasi">
+        <h2 class="section-toggle group-toggle" id="chartHeading"><span id="chartHeadingLabel">Rasi Chart (South Indian Style)</span> <span class="chevron">▼</span></h2>
+        <div class="section-content">
+          <div id="chartGrid" class="chart-grid"></div>
+        </div>
+      </section>
+
+      <section class="output-section" data-section="navamsa">
+        <h2 class="section-toggle group-toggle" id="navamsaHeading"><span id="navamsaHeadingLabel">Navamsa Chart (D9)</span> <span class="chevron">▼</span></h2>
+        <div class="section-content">
+          <div id="navamsaGrid" class="chart-grid"></div>
+        </div>
+      </section>
+
+      <section class="output-section" data-section="cosmic">
+        <h2 class="section-toggle group-toggle" id="cosmicHeading"><span id="cosmicHeadingLabel">Cosmic View</span> <span class="chevron">▼</span></h2>
+        <div class="section-content">
+          <div id="cosmicChart" class="cosmic-chart"></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="output-section" data-section="current">
+      <h2 class="section-toggle" id="currentHeading"><span id="currentHeadingLabel">Current Date &amp; Time</span> <span class="chevron">▼</span></h2>
+      <div class="section-content">
+        <div class="charts-row">
+          <div class="current-chart-block">
+            <div id="currentChartGrid" class="chart-grid"></div>
+          </div>
+          <div class="current-chart-block">
+            <div id="currentCosmicChart" class="cosmic-chart"></div>
+          </div>
+        </div>
+
+        <div class="slider-row">
+          <div class="slider-track">
+            <button type="button" class="slider-arrow" data-date-arrow="-1" data-slider-group="current" title="Previous day">◀</button>
+            <input type="range" class="range-slider date-slider" data-slider-group="current" min="0" max="21915" step="1">
+            <button type="button" class="slider-arrow" data-date-arrow="1" data-slider-group="current" title="Next day">▶</button>
+          </div>
+          <div class="slider-caption date-slider-caption" data-slider-group="current"></div>
+        </div>
+        <div class="slider-row">
+          <div class="slider-track">
+            <button type="button" class="slider-arrow" data-time-arrow="-1" data-slider-group="current" title="Back 1 minute">◀</button>
+            <input type="range" class="range-slider time-slider" data-slider-group="current" min="0" max="1439" step="1">
+            <button type="button" class="slider-arrow" data-time-arrow="1" data-slider-group="current" title="Forward 1 minute">▶</button>
+            <button type="button" class="now-btn" id="nowBtnCurrent" title="Reset to current date & time">↻</button>
+          </div>
+          <div class="slider-caption time-slider-caption" data-slider-group="current"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="output-section" data-section="sudarshana">
+      <h2 class="section-toggle" id="sudarshanaHeading"><span id="sudarshanaHeadingLabel">Sudarshana Chakra</span> <span class="chevron">▼</span></h2>
+      <div class="section-content">
+        <p class="dasha-hint" id="sudarshanaHint">Three D1 charts, each read starting from a different reference point: Lagna, Moon, and Sun</p>
+        <div class="charts-row triple">
+          <div class="current-chart-block">
+            <div class="sudarshana-label" id="sudarshanaLagnaLabel">Lagna Chart</div>
+            <div id="sudarshanaLagnaGrid" class="chart-grid"></div>
+          </div>
+          <div class="current-chart-block">
+            <div class="sudarshana-label" id="sudarshanaMoonLabel">Chandra Chart</div>
+            <div id="sudarshanaMoonGrid" class="chart-grid"></div>
+          </div>
+          <div class="current-chart-block">
+            <div class="sudarshana-label" id="sudarshanaSunLabel">Surya Chart</div>
+            <div id="sudarshanaSunGrid" class="chart-grid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="output-section" data-section="dasha">
+      <h2 class="section-toggle" id="dashaHeading"><span id="dashaHeadingLabel">Dasha &amp; Bhukti Periods</span> <span class="chevron">▼</span></h2>
+      <div class="section-content">
+        <p class="dasha-hint" id="dashaHint">Tap a period to see its Bhukti sub-periods</p>
+        <div id="dashaTable" class="dasha-table"></div>
+      </div>
+    </section>
+
+    <p class="note" id="noteText">Ayanamsa used: Lahiri (approximate). Ascendant calculated from local sidereal time.</p>
+  </div>
+</div>
+
+<div id="planetTooltip" class="planet-tooltip"></div>
+
+<script src="astronomy.min.js"></script>
+<script src="script.js"></script>
+<script>
+  // Register the service worker so the app can be installed and used offline.
+  // This only works when served over http(s) - opening index.html directly via
+  // file:// still works fine as a normal page, it just skips PWA install/offline.
+  if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("sw.js").catch(() => {
+        // Silently ignore - the app still works fully as a normal web page without it
+      });
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,1126 @@
+* { box-sizing: border-box; }
+
+:root {
+  --bg-grad-1: #1a1a2e;
+  --bg-grad-2: #16213e;
+  --container-bg: #0f172a;
+  --card-bg: #1e293b;
+  --text-main: #eee;
+  --text-sub: #a5b4cb;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+  --border-color: #334155;
+  --accent: #f4c95d;
+  --accent-2: #e8a33d;
+  --accent-text: #1a1a2e;
+  --input-bg: #1e293b;
+  --input-text: #f1f5f9;
+  --shadow: rgba(0,0,0,0.4);
+}
+
+body.light-theme {
+  --bg-grad-1: #eef1f8;
+  --bg-grad-2: #dde4f0;
+  --container-bg: #ffffff;
+  --card-bg: #f4f6fb;
+  --text-main: #1e293b;
+  --text-sub: #47556b;
+  --text-muted: #5b6b83;
+  --text-faint: #7c8aa0;
+  --border-color: #d7deea;
+  --accent: #b8842e;
+  --accent-2: #9c6c1f;
+  --accent-text: #ffffff;
+  --input-bg: #ffffff;
+  --input-text: #1e293b;
+  --shadow: rgba(30,41,59,0.12);
+}
+
+body {
+  font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2));
+  color: var(--text-main);
+  margin: 0;
+  padding: 70px 15px 30px;
+  min-height: 100vh;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Fixed top-right bar: stays visible while scrolling */
+.top-bar {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--container-bg);
+  padding: 8px 12px;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px var(--shadow);
+  z-index: 1000;
+}
+
+#themeToggle {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-bar label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.top-bar select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--input-text);
+  font-size: 0.85rem;
+}
+
+/* Page layout: single centered panel before generating,
+   two-panel (form | rasi & navamsa chart, cosmic view, and other details) after
+   generating, stretched edge-to-edge: form flush left, chart flush right */
+.page-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  transition: max-width 0.25s ease;
+}
+
+.page-wrap.expanded {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0 20px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 380px minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
+}
+
+/* Once the input form is collapsed, the result panel takes the full width */
+.page-wrap.expanded.form-collapsed-layout {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* The "current sky from my location" panel always spans the full width, appearing
+   as its own row below the main two-column layout once a chart has been generated */
+.page-wrap.expanded .current-location-panel {
+  grid-column: 1 / -1;
+}
+
+.panel {
+  background: var(--container-bg);
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 10px 40px var(--shadow);
+}
+
+/* Desktop two-column view: each panel scrolls independently,
+   so scrolling behaves based on which side the cursor is over.
+   Plain static positioning (no sticky) guarantees both panels
+   start flush at the exact same top edge, with no sticky-offset edge cases. */
+.page-wrap.expanded .panel {
+  position: static;
+  align-self: start;
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+}
+
+/* Rasi Chart and Navamsa Chart side by side */
+.charts-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.charts-row .output-section {
+  flex: 1 1 300px;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .page-wrap.expanded {
+    display: block;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0;
+  }
+  .page-wrap.expanded .panel {
+    margin-top: 20px;
+  }
+  .page-wrap.expanded .form-panel {
+    margin-top: 0;
+  }
+  /* On mobile the panels stack, so let the whole page scroll normally
+     instead of each panel scrolling independently */
+  .page-wrap.expanded .panel {
+    position: static;
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
+h1 {
+  text-align: center;
+  margin-top: 0;
+  font-size: 1.6rem;
+  color: var(--accent);
+}
+
+.subtitle {
+  text-align: center;
+  color: var(--text-sub);
+  margin-top: -10px;
+  margin-bottom: 25px;
+  font-size: 0.9rem;
+}
+
+.form-row {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-row.coords {
+  flex-direction: row;
+  gap: 16px;
+}
+
+.form-row.coords > div {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+label {
+  font-size: 0.85rem;
+  color: var(--text-sub);
+}
+
+input, select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--input-text);
+  font-size: 0.95rem;
+}
+
+#place, #lat, #lon, #tz, #personName, #personGender {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  box-sizing: border-box;
+}
+
+#tz, #personGender {
+  -webkit-appearance: none;
+  appearance: none;
+  padding-right: 34px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-faint) 50%),
+                     linear-gradient(135deg, var(--text-faint) 50%, transparent 50%);
+  background-position: calc(100% - 20px) center, calc(100% - 15px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+input:focus, select:focus {
+  outline: 2px solid var(--accent);
+}
+
+/* Segmented date/time inputs */
+.segmented {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.segmented .seg {
+  height: 42px;
+  padding: 0 4px;
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--input-text);
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.segmented .seg-2 { width: 46px; }
+.segmented .seg-4 { width: 66px; }
+
+.segmented .seg-sep {
+  color: var(--text-faint);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.segmented .seg-ampm {
+  height: 42px;
+  padding: 0 8px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--input-text);
+  font-size: 0.9rem;
+  margin-left: 4px;
+  width: 78px;
+  min-width: 78px;
+  flex-shrink: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-faint) 50%),
+                     linear-gradient(135deg, var(--text-faint) 50%, transparent 50%);
+  background-position: calc(100% - 16px) center, calc(100% - 11px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+/* "Now" (reload/current date-time) button next to year and AM/PM */
+.now-btn {
+  height: 42px;
+  width: 38px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--accent);
+  font-size: 1.1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px;
+  transition: transform 0.15s ease;
+}
+
+.now-btn:hover {
+  filter: brightness(1.15);
+}
+
+.now-btn:active {
+  transform: rotate(-45deg);
+}
+
+/* Date / Time range sliders */
+.slider-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.slider-track {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.slider-arrow {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--accent);
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  user-select: none;
+  transition: transform 0.1s ease, filter 0.1s ease;
+}
+
+.slider-arrow:hover { filter: brightness(1.15); }
+.slider-arrow:active { transform: scale(0.9); }
+
+.range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border-color);
+  outline: none;
+  padding: 0;
+  border: none;
+  touch-action: none;
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--container-bg);
+  box-shadow: 0 1px 4px var(--shadow);
+  cursor: grab;
+  margin-top: -6px;
+  transition: transform 0.08s ease;
+}
+
+.range-slider:active::-webkit-slider-thumb {
+  cursor: grabbing;
+  transform: scale(1.15);
+}
+
+.range-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--container-bg);
+  box-shadow: 0 1px 4px var(--shadow);
+  cursor: grab;
+  transition: transform 0.08s ease;
+}
+
+.range-slider:active::-moz-range-thumb {
+  cursor: grabbing;
+  transform: scale(1.15);
+}
+
+.range-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border-color);
+}
+
+.range-slider::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border-color);
+}
+
+.slider-caption {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== Cosmic View: circular starfield chart ===== */
+.cosmic-chart {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto 20px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, #10122b 0%, #05060f 75%, #000 100%);
+  box-shadow: 0 0 40px rgba(80, 90, 200, 0.25), inset 0 0 60px rgba(0,0,0,0.6);
+}
+
+.cosmic-chart svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.cosmic-star {
+  animation: cosmicTwinkle 3s ease-in-out infinite;
+}
+
+@keyframes cosmicTwinkle {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
+}
+
+#lookupBtn {
+  margin-top: 6px;
+  padding: 8px;
+  background: var(--card-bg);
+  color: var(--input-text);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+#lookupBtn:hover { filter: brightness(1.1); }
+
+.status {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  min-height: 16px;
+}
+
+#generateBtn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-text);
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#generateBtn:hover { filter: brightness(1.08); }
+
+.result-panel { margin-top: 0; }
+.result.hidden { display: none; }
+
+.result h2 {
+  font-size: 1.1rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 8px;
+}
+
+/* South Indian style fixed 4x4 chart grid */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 2px;
+  background: var(--border-color);
+  border: 2px solid var(--accent);
+  aspect-ratio: 1 / 1;
+  max-width: 480px;
+  margin: 0 auto 20px;
+}
+
+.chart-cell {
+  background: var(--card-bg);
+  padding: 6px;
+  font-size: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.chart-cell.center {
+  grid-column: span 2;
+  grid-row: span 2;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--container-bg);
+  font-size: 0.85rem;
+  color: var(--accent);
+  padding: 10px;
+}
+
+.chart-cell .rasi-name {
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.65rem;
+}
+
+.chart-cell .planet-tags {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.chart-cell .planet-tag {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-weight: 600;
+  font-size: 0.68rem;
+  width: fit-content;
+  cursor: help;
+  transition: transform 0.1s ease;
+}
+
+.chart-cell .planet-tag:hover {
+  transform: scale(1.15);
+}
+
+.cosmic-planet {
+  cursor: help;
+  transition: transform 0.15s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.cosmic-asc {
+  cursor: help;
+}
+
+.cosmic-asc:hover line[stroke="#f4c95d"] {
+  stroke-width: 2.2;
+}
+
+.cosmic-planet:hover {
+  transform: scale(1.25);
+}
+
+/* Rich planet hover tooltip - shared by both the grid chart and the Cosmic View */
+.planet-tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: var(--container-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 10px 13px;
+  font-size: 0.76rem;
+  line-height: 1.4;
+  box-shadow: 0 10px 30px var(--shadow);
+  width: max-content;
+  max-width: min(280px, calc(100vw - 24px));
+  box-sizing: border-box;
+  z-index: 3000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.1s ease;
+}
+
+.planet-tooltip.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.planet-tooltip .ptip-title {
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.planet-tooltip .ptip-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 3px 0;
+}
+
+.planet-tooltip .ptip-row + .ptip-row {
+  border-top: 1px solid var(--border-color);
+}
+
+.planet-tooltip .ptip-row span {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.planet-tooltip .ptip-row b {
+  color: var(--text-main);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chart-cell.lagna-cell {
+  border: 2px solid var(--accent);
+}
+
+/* Parvai (aspect) visuals: shown while hovering a planet in the grid chart */
+.chart-cell.aspect-source {
+  outline: 2px solid #ff8a5c;
+  outline-offset: -2px;
+  background: rgba(255, 138, 92, 0.12);
+  transition: background 0.1s ease;
+}
+
+.chart-cell.aspect-target {
+  outline: 2px dashed #ff8a5c;
+  outline-offset: -2px;
+  background: rgba(255, 138, 92, 0.07);
+  transition: background 0.1s ease;
+}
+
+.janma-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 560px) {
+  .janma-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.janma-summary .card {
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+}
+
+.janma-summary .card .label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.janma-summary .card .value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+th, td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+}
+
+.note {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  margin-top: 16px;
+  text-align: center;
+}
+
+/* ===== Horoscope Summary (Panchanga narrative + tabular summary) ===== */
+.panchanga-narrative {
+  white-space: pre-line;
+  line-height: 1.7;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  background: var(--card-bg);
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.sub-heading {
+  font-size: 0.9rem;
+  color: var(--accent);
+  margin: 18px 0 6px;
+}
+
+#weekdayBlurb, #starBlurb, #thidhiBlurb {
+  font-size: 0.82rem;
+  color: var(--text-sub);
+  line-height: 1.6;
+  margin: 0 0 4px;
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 18px;
+  font-size: 0.8rem;
+}
+
+.summary-table tr {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.summary-table .summary-label {
+  padding: 8px 10px 8px 0;
+  color: var(--text-muted);
+  width: 42%;
+  vertical-align: top;
+}
+
+.summary-table .summary-value {
+  padding: 8px 0;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+/* ===== KP Star/Sub/Sub-Sub Lord table (reuses the general <table> styling) ===== */
+
+/* ===== Sudarshana Chakra: label above each mini chart ===== */
+.sudarshana-label {
+  text-align: center;
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 0.82rem;
+  margin-bottom: 8px;
+}
+
+/* ===== Dasha & Bhukti (Tasha & Buthi) table ===== */
+.dasha-hint {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  margin: -6px 0 10px;
+}
+
+.dasha-table {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dasha-row {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--card-bg);
+}
+
+.dasha-row.current {
+  border-color: var(--accent);
+}
+
+.dasha-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dasha-main:hover {
+  filter: brightness(1.08);
+}
+
+.dasha-toggle {
+  color: var(--accent);
+  font-size: 0.65rem;
+  flex-shrink: 0;
+  width: 12px;
+}
+
+.dasha-lord {
+  font-weight: 700;
+  color: var(--text-main);
+  font-size: 0.85rem;
+  min-width: 90px;
+  flex-shrink: 0;
+}
+
+.dasha-lord em {
+  font-style: normal;
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.dasha-dates {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  flex: 1;
+}
+
+.dasha-bhuktis {
+  border-top: 1px solid var(--border-color);
+  padding: 4px 12px 4px 34px;
+}
+
+.dasha-bhuktis.hidden {
+  display: none;
+}
+
+.bhukti-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px dashed var(--border-color);
+  font-size: 0.75rem;
+}
+
+.bhukti-row:last-child {
+  border-bottom: none;
+}
+
+.bhukti-row.current {
+  color: var(--accent);
+}
+
+.bhukti-lord {
+  font-weight: 600;
+  min-width: 80px;
+  flex-shrink: 0;
+  color: var(--text-main);
+}
+
+.bhukti-row.current .bhukti-lord {
+  color: var(--accent);
+}
+
+.bhukti-lord em {
+  font-style: normal;
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.bhukti-dates {
+  color: var(--text-muted);
+  flex: 1;
+}
+
+@media (max-width: 480px) {
+  .top-bar {
+    top: 8px;
+    right: 8px;
+    padding: 6px 8px;
+    gap: 6px;
+  }
+  .top-bar label { display: none; }
+  body { padding-top: 60px; }
+}
+
+/* ===== Generic hidden utility ===== */
+.hidden { display: none !important; }
+
+/* ===== Sections toggle button: fixed on the left side of the screen ===== */
+.sections-toggle-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 2600;
+  width: 34px;
+  height: 34px;
+  background: var(--container-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 1rem;
+  box-shadow: 0 4px 16px var(--shadow);
+}
+
+.sections-toggle-btn:hover {
+  filter: brightness(1.15);
+}
+
+/* ===== Top bar: edit details + theme + language (stays right-aligned) ===== */
+.edit-details-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  height: 34px;
+  cursor: pointer;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 0.85rem;
+  padding: 0 12px;
+  white-space: nowrap;
+}
+
+.edit-details-btn:hover {
+  filter: brightness(1.15);
+}
+
+/* ===== Sections sidebar: an expand/collapse panel (not a modal), slides from the left ===== */
+.sections-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 270px;
+  max-width: 82vw;
+  background: var(--container-bg);
+  box-shadow: 6px 0 30px var(--shadow);
+  z-index: 2500;
+  padding: 70px 22px 22px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  transform: translateX(0);
+  transition: transform 0.25s ease;
+}
+
+.sections-sidebar.collapsed {
+  transform: translateX(-100%);
+}
+
+/* Push the page content over to make room for the sidebar (screen-width adjustment)
+   instead of the sidebar simply overlaying on top of everything */
+body {
+  transition: padding-left 0.25s ease;
+}
+
+body.sidebar-open {
+  padding-left: 270px;
+}
+
+@media (max-width: 700px) {
+  /* Not enough room to push content on small screens - the sidebar overlays instead */
+  body.sidebar-open {
+    padding-left: 0;
+  }
+}
+
+.sections-sidebar-header {
+  margin-bottom: 10px;
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+.sections-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  padding: 13px 6px;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.sections-nav-item .chevron {
+  font-size: 0.65rem;
+  color: var(--text-faint);
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.sections-nav-item .chevron.collapsed-state {
+  transform: rotate(-90deg);
+}
+
+.sections-nav-item:hover {
+  color: var(--accent);
+}
+
+/* ===== Collapsing the input form after generating ===== */
+.form-panel.form-collapsed {
+  display: none;
+}
+
+/* ===== Collapsible section headings (accordion) ===== */
+.section-toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  user-select: none;
+}
+
+.section-toggle .chevron {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.section-toggle:hover .chevron {
+  color: var(--accent);
+}
+
+.output-section.collapsed .chevron {
+  transform: rotate(-90deg);
+}
+
+.output-section.collapsed .section-content {
+  display: none;
+}
+
+/* Rasi / Navamsa / Cosmic View trio: one shared collapse state for all three */
+#mainChartsGroup.group-collapsed .chevron {
+  transform: rotate(-90deg);
+}
+
+#mainChartsGroup.group-collapsed .section-content {
+  display: none;
+}
+
+/* Name & Gender banner shown above the charts, if provided */
+.person-banner {
+  text-align: center;
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 1rem;
+  margin: 0 0 16px;
+}
+
+/* ===== "Current Sky, From Your Location" panel - always visible, no birth details needed ===== */
+.current-location-panel {
+  margin-top: 20px;
+}
+
+.current-location-panel h2 {
+  margin-top: 0;
+  font-size: 1.05rem;
+  color: var(--accent);
+}
+
+.use-location-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.use-location-btn:hover {
+  filter: brightness(1.1);
+}
+
+.use-location-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+#myLocationStatus {
+  min-height: 18px;
+  margin-top: 8px;
+}
+
+#myLocationResult {
+  margin-top: 16px;
+}
+
+/* Current Date & Time section: chart + cosmic view side by side */
+.current-chart-block {
+  flex: 1 1 300px;
+  min-width: 0;
+}
+
