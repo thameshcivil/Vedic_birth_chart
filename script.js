@@ -59,11 +59,12 @@ const LANG = {
       sumKpMoon: "KP Star Lord / Sub-Lord (Moon)", sumStandardTime: "Standard Time",
       sumEastGreenwich: "East of Greenwich", sumEast: "East", sumWest: "West", sumNorth: "North",
       sumSouth: "South", sumMin: "Min.",
-      geoLocating: "Locating you...", geoFoundAt: "Showing sky for",
+      geoLocating: "Locating you... (look for a permission popup and tap Allow)", geoFoundAt: "Showing sky for",
       geoDenied: "Location access denied. Please allow location access and try again.",
       geoUnavailable: "Location unavailable right now. Please try again.",
       geoTimeout: "Location request timed out. Please try again.",
       geoError: "Could not get your location.", geoNotSupported: "Geolocation isn't supported by this browser.",
+      geoStuck: "Still waiting after 15s - check that Location is turned on for this device/app, then try again.",
       dignityExalted: "Exalted", dignityDebilitated: "Debilitated", dignityOwn: "Own Sign",
       dignityFriend: "Friend's Sign", dignityEnemy: "Enemy's Sign", dignityNeutral: "Neutral Sign",
       dashaHeading: "Dasha & Bhukti Periods", dashaHint: "Tap a period to see its Bhukti sub-periods",
@@ -133,11 +134,12 @@ const LANG = {
       sumKpMoon: "KP நட்சத்திர/உப அதிபதி (சந்திரன்)", sumStandardTime: "நிலையான நேரம்",
       sumEastGreenwich: "கிரீன்விச்சிலிருந்து கிழக்கு", sumEast: "கிழக்கு", sumWest: "மேற்கு", sumNorth: "வடக்கு",
       sumSouth: "தெற்கு", sumMin: "நிமி.",
-      geoLocating: "உங்கள் இருப்பிடத்தைக் கண்டறிகிறது...", geoFoundAt: "வானம் காட்டப்படுகிறது",
+      geoLocating: "உங்கள் இருப்பிடத்தைக் கண்டறிகிறது... (அனுமதி பாப்-அப் வந்தால் 'அனுமதி' அழுத்தவும்)", geoFoundAt: "வானம் காட்டப்படுகிறது",
       geoDenied: "இருப்பிட அணுகல் மறுக்கப்பட்டது. மீண்டும் அனுமதி வழங்கி முயற்சிக்கவும்.",
       geoUnavailable: "இருப்பிடம் தற்போது கிடைக்கவில்லை. மீண்டும் முயற்சிக்கவும்.",
       geoTimeout: "இருப்பிடக் கோரிக்கை நேரம் முடிந்தது. மீண்டும் முயற்சிக்கவும்.",
       geoError: "உங்கள் இருப்பிடத்தைப் பெற முடியவில்லை.", geoNotSupported: "இந்த உலாவியில் இருப்பிடச் சேவை கிடைக்கவில்லை.",
+      geoStuck: "15 வினாடிகளாகக் காத்திருக்கிறது - இந்தச் சாதனத்தில்/ஆப்பில் இருப்பிடம் (Location) இயக்கப்பட்டுள்ளதா எனச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.",
       dignityExalted: "உச்சம்", dignityDebilitated: "நீசம்", dignityOwn: "சொந்த வீடு",
       dignityFriend: "நண்பர் வீடு", dignityEnemy: "பகைவர் வீடு", dignityNeutral: "சம வீடு",
       dashaHeading: "தசா & புத்தி காலங்கள்", dashaHint: "புத்தி காலங்களைக் காண ஒரு காலத்தைத் தொடவும்",
@@ -233,8 +235,23 @@ document.getElementById("useMyLocationBtn").addEventListener("click", () => {
   btn.disabled = true;
   status.textContent = t.ui.geoLocating;
 
+  // A few browsers/WebViews have had bugs where getCurrentPosition never calls back at
+  // all (e.g. if its own permission prompt gets dismissed in an unusual way). This
+  // watchdog guarantees the button always re-enables and the person always gets a
+  // message, even if the browser's own callbacks never fire.
+  let settled = false;
+  const watchdog = setTimeout(() => {
+    if (settled) return;
+    settled = true;
+    btn.disabled = false;
+    status.textContent = t.ui.geoStuck;
+  }, 15000);
+
   navigator.geolocation.getCurrentPosition(
     (position) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(watchdog);
       btn.disabled = false;
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
@@ -251,13 +268,16 @@ document.getElementById("useMyLocationBtn").addEventListener("click", () => {
       status.textContent = `${t.ui.geoFoundAt} ${Math.abs(lat).toFixed(2)}°${lat >= 0 ? "N" : "S"}, ${Math.abs(lon).toFixed(2)}°${lon >= 0 ? "E" : "W"}`;
     },
     (error) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(watchdog);
       btn.disabled = false;
       if (error.code === error.PERMISSION_DENIED) status.textContent = t.ui.geoDenied;
       else if (error.code === error.POSITION_UNAVAILABLE) status.textContent = t.ui.geoUnavailable;
       else if (error.code === error.TIMEOUT) status.textContent = t.ui.geoTimeout;
       else status.textContent = t.ui.geoError;
     },
-    { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 }
+    { enableHighAccuracy: false, timeout: 12000, maximumAge: 60000 }
   );
 });
 
