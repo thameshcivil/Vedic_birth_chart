@@ -3,12 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vedic Birth Chart Generator</title>
+<title>Vedic Birth Chart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Sans+Tamil:wght@400;500;600&family=Noto+Serif+Tamil:wght@400;500&display=swap">
+<link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="style.css">
 
 <!-- PWA: lets Android/Chrome (and iOS Safari) install this as a home-screen app -->
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#10131f">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes">
@@ -18,16 +22,18 @@
 </head>
 <body>
 
-<button type="button" id="sectionsToggleBtn" class="sections-toggle-btn" title="Jump to a section">☰</button>
+<button type="button" id="sectionsToggleBtn" class="sections-toggle-btn" title="Jump to a section" aria-label="Jump to a section" aria-controls="sectionsSidebar" aria-expanded="false">
+  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>
+</button>
 
 <div class="top-bar">
-  <button type="button" id="editDetailsBtn" class="edit-details-btn hidden" title="Edit birth details">✎ <span id="editDetailsLabel">Edit Details</span></button>
-  <button type="button" id="themeToggle" title="Toggle dark/light mode">🌙</button>
+  <button type="button" id="editDetailsBtn" class="edit-details-btn hidden" title="Edit birth details"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10.5 2.5l3 3L6 13H3v-3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" fill="none"/></svg><span id="editDetailsLabel">Edit Details</span></button>
+  <button type="button" id="themeToggle" title="Switch between night and day themes" aria-pressed="false">Day</button>
   <label id="langLabel" for="langSelect">Language</label>
   <select id="langSelect"></select>
 </div>
 
-<div class="sections-sidebar collapsed" id="sectionsSidebar">
+<nav class="sections-sidebar collapsed" id="sectionsSidebar" aria-label="Sections">
   <div class="sections-sidebar-header">
     <span id="sectionsSidebarTitle">Jump to Section</span>
   </div>
@@ -38,11 +44,11 @@
   <button type="button" class="sections-nav-item" data-goto="current"><span id="secLabelCurrent">Current Date &amp; Time</span> <span class="chevron">▼</span></button>
   <button type="button" class="sections-nav-item" data-goto="sudarshana"><span id="secLabelSudarshana">Sudarshana Chakra</span> <span class="chevron">▼</span></button>
   <button type="button" class="sections-nav-item" data-goto="dasha"><span id="secLabelDasha">Dasha &amp; Bhukti</span> <span class="chevron">▼</span></button>
-</div>
+</nav>
 
 <div class="page-wrap" id="pageWrap">
   <div class="panel form-panel" id="formPanel">
-    <h1 id="appTitle">🪐 Vedic Birth Chart Generator</h1>
+    <h1 id="appTitle">Vedic Birth Chart</h1>
     <p class="subtitle" id="appSubtitle">Enter birth details to generate the Rasi chart with Nakshatra &amp; Pada</p>
 
     <form id="birthForm">
@@ -91,9 +97,10 @@
 
       <div class="form-row">
         <label id="tzLabel" for="tz">Timezone Offset (from UTC)</label>
-        <select id="tz" required>
+        <select id="tz" required aria-describedby="tzHint">
           <!-- filled by script.js -->
         </select>
+        <p class="hint" id="tzHint"></p>
       </div>
 
       <div class="form-row">
@@ -113,17 +120,18 @@
         </div>
       </div>
 
-      <p id="lookupStatus" class="status"></p>
+      <p id="lookupStatus" class="status" aria-live="polite"></p>
+      <p id="formError" class="form-error hidden" role="alert"></p>
 
       <button type="submit" id="generateBtn">Generate Birth Chart</button>
     </form>
   </div>
 
   <div class="panel current-location-panel" id="currentLocationPanel">
-    <h2 id="myLocationHeading">🌍 Current Sky, From Your Location</h2>
+    <h2 id="myLocationHeading">The sky right now, from where you are</h2>
     <p class="subtitle" id="myLocationSubtitle">See where the planets are right now, using your device's current location - no birth details needed.</p>
-    <button type="button" id="useMyLocationBtn" class="use-location-btn">📍 <span id="useMyLocationLabel">Use My Current Location</span></button>
-    <p class="status" id="myLocationStatus"></p>
+    <button type="button" id="useMyLocationBtn" class="use-location-btn"><span id="useMyLocationLabel">Use My Current Location</span></button>
+    <p class="status" id="myLocationStatus" aria-live="polite"></p>
 
     <div id="myLocationResult" class="hidden">
       <div class="charts-row">

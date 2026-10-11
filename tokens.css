@@ -1,0 +1,130 @@
+/* Hallmark · genre: atmospheric · macrostructure: Workbench (app, IA preserved) · theme: custom
+ * vibe: "observatory almanac — night ink, temple brass, palm-leaf"
+ * night: paper oklch(19% 0.024 272) · accent oklch(80% 0.115 78) brass
+ * day:   paper oklch(95.5% 0.016 85) · accent oklch(50% 0.165 35) kumkum
+ * type: Fraunces (display, roman) + IBM Plex Sans + Noto Sans Tamil (body) + IBM Plex Mono (figures)
+ * axes: dark / roman-serif / warm · references: Inspo portalone-studio (hairline-ruled grid),
+ *       harvard-edu (transitional serif + ochre on dark)
+ *
+ * Every colour and font in the app resolves to a token in this file. */
+
+:root {
+  /* ----- Night (default) ----- */
+  --color-paper:        oklch(19% 0.024 272);
+  --color-paper-2:      oklch(22.5% 0.026 272);
+  --color-paper-3:      oklch(27% 0.028 272);
+  --color-rule:         oklch(33% 0.024 272);
+  --color-rule-2:       oklch(45% 0.026 272);
+  --color-ink:          oklch(94% 0.012 85);
+  --color-ink-2:        oklch(85% 0.014 85);
+  --color-muted:        oklch(71% 0.018 270);
+  --color-faint:        oklch(60% 0.018 270);
+  --color-accent:       oklch(80% 0.115 78);
+  --color-accent-hover: oklch(85% 0.105 80);
+  --color-accent-ink:   oklch(19% 0.024 272);
+  --color-accent-soft:  oklch(80% 0.115 78 / 0.13);
+  --color-accent-2:     oklch(72% 0.13 35);
+  --color-accent-2-soft: oklch(72% 0.13 35 / 0.15);
+  --color-focus:        oklch(86% 0.12 80);
+  --color-danger:       oklch(74% 0.14 28);
+  --color-shadow:       oklch(8% 0.02 272 / 0.7);
+
+  /* ----- The sky: the Cosmic View stays a night sky in both themes ----- */
+  --sky-centre:      oklch(17% 0.035 272);
+  --sky-edge:        oklch(9% 0.02 272);
+  --sky-border:      oklch(33% 0.03 272);
+  --sky-ring:        oklch(50% 0.055 272);
+  --sky-ring-2:      oklch(41% 0.05 272);
+  --sky-tick:        oklch(58% 0.05 272);
+  --sky-spoke:       oklch(62% 0.04 272);
+  --sky-label:       oklch(89% 0.03 270);
+  --sky-label-bg:    oklch(11% 0.025 272 / 0.78);
+  --sky-planet-label: oklch(93% 0.06 85);
+  --sky-star:        oklch(97% 0.01 90);
+  --sky-asc:         oklch(82% 0.12 78);
+  --sky-earth:       oklch(84% 0.08 230);
+  --sky-earth-edge:  oklch(93% 0.04 230);
+  --sky-node-fill:   oklch(19% 0.03 272);
+
+  /* Planet marker colours (approximate naked-eye colour of each body) */
+  --planet-sun:     oklch(88% 0.15 88);
+  --planet-moon:    oklch(96% 0.012 270);
+  --planet-mercury: oklch(76% 0.015 80);
+  --planet-venus:   oklch(97% 0.035 90);
+  --planet-mars:    oklch(64% 0.17 37);
+  --planet-jupiter: oklch(78% 0.10 65);
+  --planet-saturn:  oklch(84% 0.09 88);
+  --planet-rahu:    oklch(63% 0.11 290);
+  --planet-ketu:    oklch(62% 0.06 50);
+
+  /* ----- Type ----- */
+  --font-display: "Fraunces", "Noto Serif Tamil", ui-serif, Georgia, serif;
+  --font-body:    "IBM Plex Sans", "Noto Sans Tamil", ui-sans-serif, sans-serif;
+  --font-mono:    "IBM Plex Mono", "Noto Sans Tamil", ui-monospace, monospace;
+
+  --text-2xs: 0.6875rem;
+  --text-xs:  0.75rem;
+  --text-sm:  0.8125rem;
+  --text-base: 0.9375rem;
+  --text-md:  1.0625rem;
+  --text-lg:  1.25rem;
+  --text-xl:  1.5rem;
+  --text-display: clamp(1.875rem, 2.2vw + 1.1rem, 2.75rem);
+
+  --tracking-display: -0.018em;
+  --tracking-label: 0.07em;
+  --lh-tight: 1.15;
+  --lh-body: 1.55;
+  --lh-read: 1.75;
+  --measure: 68ch;
+
+  /* ----- Space (4-pt scale) ----- */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs:  0.75rem;
+  --space-sm:  1rem;
+  --space-md:  1.5rem;
+  --space-lg:  2rem;
+  --space-xl:  3rem;
+  --space-2xl: 4.5rem;
+  --bar-height: 3.25rem;
+  --sidebar-width: 17rem;
+
+  /* ----- Shape, rule, motion ----- */
+  --radius-input: 4px;
+  --radius-card: 6px;
+  --radius-pill: 999px;
+  --rule-hair: 1px solid var(--color-rule);
+  --rule-strong: 1px solid var(--color-rule-2);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-short: 140ms;
+  --dur-med: 240ms;
+
+  color-scheme: dark;
+}
+
+/* ----- Day: palm-leaf paper, iron-gall ink, kumkum accent ----- */
+body.light-theme {
+  --color-paper:        oklch(95.5% 0.016 85);
+  --color-paper-2:      oklch(98% 0.009 85);
+  --color-paper-3:      oklch(91.5% 0.02 80);
+  --color-rule:         oklch(85% 0.022 78);
+  --color-rule-2:       oklch(68% 0.026 70);
+  --color-ink:          oklch(22% 0.025 55);
+  --color-ink-2:        oklch(31% 0.025 55);
+  --color-muted:        oklch(46% 0.025 60);
+  --color-faint:        oklch(55% 0.022 60);
+  --color-accent:       oklch(50% 0.165 35);
+  --color-accent-hover: oklch(45% 0.16 33);
+  --color-accent-ink:   oklch(98% 0.009 85);
+  --color-accent-soft:  oklch(50% 0.165 35 / 0.09);
+  --color-accent-2:     oklch(45% 0.13 268);
+  --color-accent-2-soft: oklch(45% 0.13 268 / 0.1);
+  --color-focus:        oklch(46% 0.17 35);
+  --color-danger:       oklch(48% 0.17 28);
+  --color-shadow:       oklch(30% 0.03 60 / 0.22);
+  color-scheme: light;
+}

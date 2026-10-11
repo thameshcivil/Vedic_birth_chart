@@ -19,7 +19,7 @@ const LANG = {
     planetAbbrev: { Sun: "Su", Moon: "Mo", Mercury: "Me", Venus: "Ve", Mars: "Ma",
       Jupiter: "Ju", Saturn: "Sa", Rahu: "Ra", Ketu: "Ke" },
     ui: {
-      title: "🪐 Vedic Birth Chart Generator",
+      title: "Vedic Birth Chart",
       subtitle: "Enter birth details to generate the Rasi chart with Nakshatra & Pada",
       dob: "Date of Birth", tob: "Time of Birth", tz: "Timezone Offset (from UTC)",
       place: "Birth Place (city name)", placeholder: "e.g. Chennai, India",
@@ -30,7 +30,7 @@ const LANG = {
       moonRasi: "Rasi (Moon Sign)", nakshatraLbl: "Nakshatra", padaLbl: "Nakshatra Pada",
       lagna: "Lagna (Ascendant)", thGraha: "Graha", thLon: "Sidereal Longitude",
       thRasi: "Rasi", thNak: "Nakshatra", thPada: "Pada",
-      note: "Ayanamsa used: Lahiri (approximate). Ascendant calculated from local sidereal time.",
+      note: "Ayanamsa: Lahiri (Chitra Paksha), true value for the date. Rahu and Ketu use the mean lunar node. Ascendant computed from local sidereal time.",
       lagnaTag: "Lagna", langLabel: "Language",
       tipRasi: "Currently in", tipDegree: "Degree", tipNakshatra: "Nakshatra",
       tipEnters: "Entered sign", tipExits: "Leaves sign",
@@ -42,7 +42,7 @@ const LANG = {
       kpThSub: "Sub-Lord", kpThSubSub: "Sub-Sub-Lord", sudarshanaHeading: "Sudarshana Chakra",
       sudarshanaHint: "Three D1 charts, each read starting from a different reference point: Lagna, Moon, and Sun",
       sudarshanaLagna: "Lagna Chart", sudarshanaMoon: "Chandra Chart", sudarshanaSun: "Surya Chart",
-      myLocationHeading: "🌍 Current Sky, From Your Location",
+      myLocationHeading: "The sky right now, from where you are",
       myLocationSubtitle: "See where the planets are right now, using your device's current location - no birth details needed.",
       useMyLocationLabel: "Use My Current Location",
       secPanchanga: "Horoscope Summary", secKp: "Star/Sub/Sub-Sub Lord", secSudarshana: "Sudarshana Chakra",
@@ -74,7 +74,18 @@ const LANG = {
       secNavamsa: "Navamsa Chart", secJanma: "Janma Details", secTable: "Planetary Positions",
       secDasha: "Dasha & Bhukti", secCurrent: "Current Date & Time",
       currentHeading: "Current Date & Time", nameLabel: "Name", genderLabel: "Gender",
-      genderOptNone: "Prefer not to say", genderOpt_female: "Female", genderOpt_male: "Male", genderOpt_other: "Other"
+      genderOptNone: "Prefer not to say", genderOpt_female: "Female", genderOpt_male: "Male", genderOpt_other: "Other",
+      lookupEmpty: "Type a place name first.", lookupSearching: "Searching…",
+      lookupNoMatch: "No match found. Enter latitude and longitude manually.", lookupFound: "Found:",
+      lookupFailed: "Lookup failed (no internet?). Enter coordinates manually.",
+      errMissing: "Fill in the date, time and coordinates to generate the chart.",
+      errBadDate: "That date doesn't exist. Check the day and month.",
+      errBadTime: "Check the time: hours 1–12, minutes and seconds 0–59.",
+      errBadCoords: "Latitude must be between -90 and 90, longitude between -180 and 180.",
+      tzHint: "Use the offset in force at the time of birth. India used UTC+6:30 from 1 Sep 1942 to 15 Oct 1945, Kolkata kept its own local time (UTC+5:53) until 1948, and Mumbai (UTC+4:51) until 1955.",
+      dasaSystemValue: "Vimshottari, 1 year = 365.25 days",
+      themeToNight: "Night", themeToDay: "Day", sectionsBtn: "Sections",
+      preSunriseNote: "born before sunrise, so the previous day's weekday applies"
     }
   },
   ta: {
@@ -94,7 +105,7 @@ const LANG = {
     planetAbbrev: { Sun: "சூ", Moon: "சந்", Mercury: "புத", Venus: "சுக்",
       Mars: "செவ்", Jupiter: "குரு", Saturn: "சனி", Rahu: "ராகு", Ketu: "கேது" },
     ui: {
-      title: "🪐 ஜாதக கட்டம் (ராசி சக்கரம்)",
+      title: "ஜாதக கட்டம் (ராசி சக்கரம்)",
       subtitle: "நட்சத்திரம், ராசி மற்றும் பாதம் அறிய பிறந்த விவரங்களை உள்ளிடவும்",
       dob: "பிறந்த தேதி", tob: "பிறந்த நேரம்", tz: "நேர மண்டல வேறுபாடு (UTC அடிப்படையில்)",
       place: "பிறந்த ஊர்", placeholder: "எ.கா. சென்னை, இந்தியா",
@@ -105,7 +116,7 @@ const LANG = {
       moonRasi: "ராசி (சந்திர ராசி)", nakshatraLbl: "நட்சத்திரம்", padaLbl: "நட்சத்திர பாதம்",
       lagna: "லக்னம்", thGraha: "கிரகம்", thLon: "நட்சத்திர தீர்க்கம்",
       thRasi: "ராசி", thNak: "நட்சத்திரம்", thPada: "பாதம்",
-      note: "பயன்படுத்தப்பட்ட அயனாம்சம்: லாஹிரி (தோராயம்). லக்னம் உள்ளூர் நட்சத்திர நேரத்தில் இருந்து கணக்கிடப்பட்டது.",
+      note: "அயனாம்சம்: லாஹிரி (சித்திரா பக்ஷம்), அந்தத் தேதிக்கான உண்மை மதிப்பு. ராகு, கேது சராசரி சந்திர கணுவின்படி. லக்னம் உள்ளூர் நட்சத்திர நேரத்தில் இருந்து கணக்கிடப்பட்டது.",
       lagnaTag: "லக்னம்", langLabel: "மொழி",
       tipRasi: "தற்போது", tipDegree: "பாகை", tipNakshatra: "நட்சத்திரம்",
       tipEnters: "ராசியில் நுழைந்தது", tipExits: "ராசியை விடும் நேரம்",
@@ -117,7 +128,7 @@ const LANG = {
       kpThSub: "உப அதிபதி", kpThSubSub: "உப-உப அதிபதி", sudarshanaHeading: "சுதர்சன சக்கரம்",
       sudarshanaHint: "லக்னம், சந்திரன், சூரியன் என மூன்று வெவ்வேறு தொடக்கப் புள்ளிகளில் இருந்து படிக்கப்படும் மூன்று D1 சக்கரங்கள்",
       sudarshanaLagna: "லக்ன சக்கரம்", sudarshanaMoon: "சந்திர சக்கரம்", sudarshanaSun: "சூரிய சக்கரம்",
-      myLocationHeading: "🌍 நடப்பு வானம், உங்கள் இருப்பிடத்தில் இருந்து",
+      myLocationHeading: "இப்போதைய வானம், நீங்கள் இருக்கும் இடத்திலிருந்து",
       myLocationSubtitle: "பிறந்த விவரங்கள் தேவையில்லை - உங்கள் சாதனத்தின் நடப்பு இருப்பிடத்தைப் பயன்படுத்தி இப்போது கிரகங்கள் எங்கே உள்ளன எனப் பாருங்கள்.",
       useMyLocationLabel: "எனது நடப்பு இருப்பிடத்தைப் பயன்படுத்து",
       secPanchanga: "ஜாதக சுருக்கம்", secKp: "நட்சத்திர/உப அதிபதி", secSudarshana: "சுதர்சன சக்கரம்",
@@ -149,7 +160,18 @@ const LANG = {
       secNavamsa: "நவாம்சம்", secJanma: "ஜென்ம விவரங்கள்", secTable: "கிரக நிலைகள்",
       secDasha: "தசா & புத்தி", secCurrent: "நடப்பு தேதி & நேரம்",
       currentHeading: "நடப்பு தேதி & நேரம்", nameLabel: "பெயர்", genderLabel: "பாலினம்",
-      genderOptNone: "தெரிவிக்க விரும்பவில்லை", genderOpt_female: "பெண்", genderOpt_male: "ஆண்", genderOpt_other: "மற்றவை"
+      genderOptNone: "தெரிவிக்க விரும்பவில்லை", genderOpt_female: "பெண்", genderOpt_male: "ஆண்", genderOpt_other: "மற்றவை",
+      lookupEmpty: "முதலில் ஊரின் பெயரை உள்ளிடவும்.", lookupSearching: "தேடுகிறது…",
+      lookupNoMatch: "பொருத்தம் கிடைக்கவில்லை. அட்சரேகை, தீர்க்கரேகையை நேரடியாக உள்ளிடவும்.", lookupFound: "கண்டறியப்பட்டது:",
+      lookupFailed: "தேடல் தோல்வியடைந்தது (இணையம் இல்லையா?). அட்சரேகை, தீர்க்கரேகையை நேரடியாக உள்ளிடவும்.",
+      errMissing: "ஜாதகம் உருவாக்க தேதி, நேரம், அட்சரேகை, தீர்க்கரேகை ஆகியவற்றை உள்ளிடவும்.",
+      errBadDate: "இந்தத் தேதி இல்லை. நாள் மற்றும் மாதத்தைச் சரிபார்க்கவும்.",
+      errBadTime: "நேரத்தைச் சரிபார்க்கவும்: மணி 1–12, நிமிடம் மற்றும் வினாடி 0–59.",
+      errBadCoords: "அட்சரேகை -90 முதல் 90 வரை, தீர்க்கரேகை -180 முதல் 180 வரை இருக்க வேண்டும்.",
+      tzHint: "பிறந்த நேரத்தில் நடைமுறையில் இருந்த நேர வேறுபாட்டைப் பயன்படுத்தவும். 1 செப் 1942 முதல் 15 அக் 1945 வரை இந்தியா UTC+6:30 பயன்படுத்தியது; கொல்கத்தா 1948 வரை (UTC+5:53), மும்பை 1955 வரை (UTC+4:51) தங்கள் சொந்த உள்ளூர் நேரத்தைப் பயன்படுத்தின.",
+      dasaSystemValue: "விம்சோத்தரி, 1 ஆண்டு = 365.25 நாட்கள்",
+      themeToNight: "இரவு", themeToDay: "பகல்", sectionsBtn: "பிரிவுகள்",
+      preSunriseNote: "சூரிய உதயத்திற்கு முன் பிறந்ததால் முந்தைய நாளின் கிழமை"
     }
   }
 };
@@ -176,12 +198,9 @@ const CHART_LAYOUT = {
 
 // ===== Populate timezone dropdown =====
 const tzSelect = document.getElementById("tz");
-for (let m = -12; m <= 14; m++) {
-  // build common half/quarter hour offsets in a simple way
-}
 const commonOffsets = [
   -12, -11, -10, -9.5, -9, -8, -7, -6, -5, -4.5, -4, -3.5, -3, -2, -1, 0,
-  1, 2, 3, 3.5, 4, 4.5, 5, 5.5, 5.75, 6, 6.5, 7, 8, 8.75, 9, 9.5, 10, 10.5, 11, 12, 12.75, 13, 14
+  1, 2, 3, 3.5, 4, 4.5, 4.85, 5, 5.5, 5.75, 5.8889, 6, 6.5, 7, 8, 8.75, 9, 9.5, 10, 10.5, 11, 12, 12.75, 13, 14
 ];
 commonOffsets.forEach(off => {
   const opt = document.createElement("option");
@@ -199,24 +218,25 @@ commonOffsets.forEach(off => {
 document.getElementById("lookupBtn").addEventListener("click", async () => {
   const place = document.getElementById("place").value.trim();
   const status = document.getElementById("lookupStatus");
+  const u = LANG[currentLang].ui;
   if (!place) {
-    status.textContent = "Type a place name first.";
+    status.textContent = u.lookupEmpty;
     return;
   }
-  status.textContent = "Searching...";
+  status.textContent = u.lookupSearching;
   try {
     const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(place)}`;
     const res = await fetch(url, { headers: { "Accept": "application/json" } });
     const data = await res.json();
     if (data.length === 0) {
-      status.textContent = "No match found. Enter latitude/longitude manually.";
+      status.textContent = u.lookupNoMatch;
       return;
     }
     document.getElementById("lat").value = parseFloat(data[0].lat).toFixed(4);
     document.getElementById("lon").value = parseFloat(data[0].lon).toFixed(4);
-    status.textContent = `Found: ${data[0].display_name}`;
+    status.textContent = `${u.lookupFound} ${data[0].display_name}`;
   } catch (err) {
-    status.textContent = "Lookup failed (no internet?). Enter coordinates manually.";
+    status.textContent = u.lookupFailed;
   }
 });
 
@@ -312,19 +332,31 @@ function getTropicalLongitude(bodyKey, date) {
   return Astronomy.Ecliptic(vec).elon;
 }
 
-// Lahiri (Chitra Paksha) ayanamsa - IAU precession-based formula, anchored to the
-// standard J2000.0 value of 23°51'11" (23.85300 deg). This is the same approach
-// used by Swiss Ephemeris and most professional Vedic astrology software, and is
-// accurate to well under 1 arcsecond, far tighter than a straight-line approximation.
-function getAyanamsa(date) {
-  const time = Astronomy.MakeTime(date);
-  const T = time.tt / 36525; // Julian centuries from J2000.0 (TT)
-  const accumulatedPrecessionArcsec =
-    5028.796195 * T +
+// Lahiri (Chitra Paksha) ayanamsa, anchored where the Indian Calendar Reform Committee
+// defined it: 23°15'00.658" on 21 March 1956 (JD 2435553.5). That official figure
+// includes nutation, so - like Swiss Ephemeris - we take the mean value at the epoch
+// (23.250182778° minus 16.77" of nutation = 23.245524743°), carry it forward with the
+// IAU 2006 general precession in longitude, and add back nutation in longitude for the
+// date. The planet longitudes from Astronomy Engine are referred to the true equinox
+// of date, so subtracting this "true" ayanamsa gives the correct sidereal positions.
+// Agrees with Swiss Ephemeris' Lahiri to within about a second of arc.
+const LAHIRI_EPOCH_T = (2435553.5 - 2451545.0) / 36525; // centuries from J2000
+const LAHIRI_MEAN_AT_EPOCH = 23.250182778 - 0.004658035;
+
+function generalPrecessionArcsec(T) {
+  return 5028.796195 * T +
     1.1054348 * T * T +
     0.00007964 * T * T * T -
     0.000023857 * T * T * T * T;
-  return 23.85300 + accumulatedPrecessionArcsec / 3600;
+}
+
+function getAyanamsa(date) {
+  const time = Astronomy.MakeTime(date);
+  const T = time.tt / 36525; // Julian centuries from J2000.0 (TT)
+  const meanAyanamsa = LAHIRI_MEAN_AT_EPOCH +
+    (generalPrecessionArcsec(T) - generalPrecessionArcsec(LAHIRI_EPOCH_T)) / 3600;
+  const nutationInLongitudeDeg = Astronomy.e_tilt(time).dpsi / 3600; // dpsi is in arcseconds
+  return meanAyanamsa + nutationInLongitudeDeg;
 }
 
 function getSiderealLongitude(tropicalLon, ayanamsa) {
@@ -724,15 +756,16 @@ function getKPLords(sidLon) {
 
 
 const PLANET_VISUALS = {
-  Sun:     { color: "#ffd452", glow: 3.0, r: 10 },
-  Moon:    { color: "#eef1fb", glow: 2.0, r: 8.5 },
-  Mercury: { color: "#b9b2a6", glow: 1.0, r: 5 },
-  Venus:   { color: "#fff6da", glow: 2.6, r: 8 },
-  Mars:    { color: "#e35d3a", glow: 1.6, r: 6 },
-  Jupiter: { color: "#e3ab73", glow: 2.0, r: 9.5 },
-  Saturn:  { color: "#e0c98a", glow: 1.6, r: 8.5, ring: true },
-  Rahu:    { color: "#8f7fc9", glow: 0.6, r: 6, shadow: true },
-  Ketu:    { color: "#a97b63", glow: 0.6, r: 6, shadow: true }
+  // Colours are CSS tokens (tokens.css), so they're applied through style="" below
+  Sun:     { color: "var(--planet-sun)", glow: 3.0, r: 10 },
+  Moon:    { color: "var(--planet-moon)", glow: 2.0, r: 8.5 },
+  Mercury: { color: "var(--planet-mercury)", glow: 1.0, r: 5 },
+  Venus:   { color: "var(--planet-venus)", glow: 2.6, r: 8 },
+  Mars:    { color: "var(--planet-mars)", glow: 1.6, r: 6 },
+  Jupiter: { color: "var(--planet-jupiter)", glow: 2.0, r: 9.5 },
+  Saturn:  { color: "var(--planet-saturn)", glow: 1.6, r: 8.5, ring: true },
+  Rahu:    { color: "var(--planet-rahu)", glow: 0.6, r: 6, shadow: true },
+  Ketu:    { color: "var(--planet-ketu)", glow: 0.6, r: 6, shadow: true }
 };
 
 // ===== Sign ingress/egress: find when a planet entered and will leave its current Rasi =====
@@ -1039,7 +1072,7 @@ function renderChart(containerId, planetPositions, ascRasi, tooltipMode) {
   center.className = "chart-cell center";
   center.style.gridRow = "2 / span 2";
   center.style.gridColumn = "2 / span 2";
-  center.innerHTML = `<div>${t.ui.lagnaTag}:<br><b>${t.rasiShort[ascRasi]}</b></div>`;
+  center.innerHTML = `<div>${t.ui.lagnaTag}<b>${t.rasiShort[ascRasi]}</b></div>`;
   grid.appendChild(center);
 }
 
@@ -1068,7 +1101,9 @@ function measureTextWidth(text, fontSize, weight) {
         if (!_measureCanvasCtx) _measureCanvasFailed = true;
       }
       if (_measureCanvasCtx) {
-        _measureCanvasCtx.font = `${weight || 600} ${fontSize}px -apple-system, "Helvetica Neue", Arial, sans-serif`;
+        // Measure with the same family the SVG labels render in (the body font token)
+        const family = getComputedStyle(document.body).fontFamily || "sans-serif";
+        _measureCanvasCtx.font = `${weight || 600} ${fontSize}px ${family}`;
         return _measureCanvasCtx.measureText(text).width;
       }
     } catch (e) {
@@ -1106,15 +1141,15 @@ function renderCosmicChart(containerId, planetPositions, ascSidDeg, t, tooltipMo
     const measured = measureTextWidth(text, fontSize, weight);
     const w = Math.max(18, measured + 12);
     const h = fontSize + 8;
-    return `<rect x="${(x - w / 2).toFixed(1)}" y="${(y - h / 2).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="4" fill="#05060f" opacity="0.72"/>` +
-      `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" fill="${fill}" font-size="${fontSize}" font-weight="${weight || 600}" text-anchor="middle" dominant-baseline="middle">${esc(text)}</text>`;
+    return `<rect x="${(x - w / 2).toFixed(1)}" y="${(y - h / 2).toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="3" style="fill:var(--sky-label-bg)"/>` +
+      `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" style="fill:${fill}" font-size="${fontSize}" font-weight="${weight || 600}" text-anchor="middle" dominant-baseline="middle">${esc(text)}</text>`;
   }
 
   let svg = `<svg viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">`;
   svg += `<defs>
     <radialGradient id="earthGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#bfe6ff" stop-opacity="1"/>
-      <stop offset="100%" stop-color="#8fd3ff" stop-opacity="0"/>
+      <stop offset="0%" style="stop-color:var(--sky-earth-edge);stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:var(--sky-earth);stop-opacity:0"/>
     </radialGradient>`;
   // A dedicated soft-glow filter per planet, tuned to its brightness
   Object.keys(PLANET_VISUALS).forEach(key => {
@@ -1134,22 +1169,22 @@ function renderCosmicChart(containerId, planetPositions, ascSidDeg, t, tooltipMo
     const sy = rand() * size;
     const r = 0.4 + rand() * 1.1;
     const delay = (rand() * 3).toFixed(2);
-    svg += `<circle class="cosmic-star" cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="${r.toFixed(2)}" fill="#ffffff" style="animation-delay:${delay}s"/>`;
+    svg += `<circle class="cosmic-star" cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="${r.toFixed(2)}" style="fill:var(--sky-star);animation-delay:${delay}s"/>`;
   }
   svg += `</g>`;
 
   // Outer zodiac ring with 12 rasi divisions
-  svg += `<circle cx="${cx}" cy="${cy}" r="${ringOuter}" fill="none" stroke="#4a4f7a" stroke-width="1.5" opacity="0.8"/>`;
-  svg += `<circle cx="${cx}" cy="${cy}" r="${ringInner}" fill="none" stroke="#3a3f66" stroke-width="1" opacity="0.6"/>`;
+  svg += `<circle cx="${cx}" cy="${cy}" r="${ringOuter}" fill="none" style="stroke:var(--sky-ring)" stroke-width="1.2"/>`;
+  svg += `<circle cx="${cx}" cy="${cy}" r="${ringInner}" fill="none" style="stroke:var(--sky-ring-2)" stroke-width="1"/>`;
 
   for (let r = 0; r < 12; r++) {
     const deg = r * 30;
     const p1 = pointAt(deg, ringInner);
     const p2 = pointAt(deg, ringOuter);
-    svg += `<line x1="${p1.x.toFixed(1)}" y1="${p1.y.toFixed(1)}" x2="${p2.x.toFixed(1)}" y2="${p2.y.toFixed(1)}" stroke="#4a4f7a" stroke-width="1" opacity="0.7"/>`;
+    svg += `<line x1="${p1.x.toFixed(1)}" y1="${p1.y.toFixed(1)}" x2="${p2.x.toFixed(1)}" y2="${p2.y.toFixed(1)}" style="stroke:var(--sky-ring)" stroke-width="1"/>`;
 
     const labelPt = pointAt(deg + 15, ringOuter + 14);
-    svg += labelPill(labelPt.x, labelPt.y, t.rasiShort[r], 11, "#d6daf5");
+    svg += labelPill(labelPt.x, labelPt.y, t.rasiShort[r], 11, "var(--sky-label)", 500);
   }
 
   // Fine nakshatra ticks (27 divisions) for a bit of extra texture
@@ -1157,7 +1192,7 @@ function renderCosmicChart(containerId, planetPositions, ascSidDeg, t, tooltipMo
     const deg = n * (360 / 27);
     const p1 = pointAt(deg, ringInner);
     const p2 = pointAt(deg, ringInner + 10);
-    svg += `<line x1="${p1.x.toFixed(1)}" y1="${p1.y.toFixed(1)}" x2="${p2.x.toFixed(1)}" y2="${p2.y.toFixed(1)}" stroke="#5a5f8a" stroke-width="0.6" opacity="0.5"/>`;
+    svg += `<line x1="${p1.x.toFixed(1)}" y1="${p1.y.toFixed(1)}" x2="${p2.x.toFixed(1)}" y2="${p2.y.toFixed(1)}" style="stroke:var(--sky-tick)" stroke-width="0.6" opacity="0.6"/>`;
   }
 
   // Ascendant (Lagna) line - drawn across the full circle to mark the horizon axis.
@@ -1167,16 +1202,16 @@ function renderCosmicChart(containerId, planetPositions, ascSidDeg, t, tooltipMo
   const ascInner = pointAt(ascSidDeg + 180, ringOuter + 20);
   svg += `<g class="cosmic-asc" data-asc="1">`;
   svg += `<line x1="${ascInner.x.toFixed(1)}" y1="${ascInner.y.toFixed(1)}" x2="${ascOuter.x.toFixed(1)}" y2="${ascOuter.y.toFixed(1)}" stroke="transparent" stroke-width="16"/>`;
-  svg += `<line x1="${ascInner.x.toFixed(1)}" y1="${ascInner.y.toFixed(1)}" x2="${ascOuter.x.toFixed(1)}" y2="${ascOuter.y.toFixed(1)}" stroke="#f4c95d" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.85"/>`;
+  svg += `<line x1="${ascInner.x.toFixed(1)}" y1="${ascInner.y.toFixed(1)}" x2="${ascOuter.x.toFixed(1)}" y2="${ascOuter.y.toFixed(1)}" class="asc-line" style="stroke:var(--sky-asc)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
   // Placed further out than the rasi labels (ringOuter+14) so the two never overlap,
   // even when the Ascendant falls in the middle of a sign right where its label sits.
   const ascLabelPt = pointAt(ascSidDeg, ringOuter + 44);
-  svg += labelPill(ascLabelPt.x, ascLabelPt.y, t.ui.lagnaTag, 11, "#f4c95d", 700);
+  svg += labelPill(ascLabelPt.x, ascLabelPt.y, t.ui.lagnaTag, 11, "var(--sky-asc)", 600);
   svg += `</g>`;
 
   // Center "Earth" marker (this is a geocentric chart)
   svg += `<circle cx="${cx}" cy="${cy}" r="11" fill="url(#earthGlow)" opacity="0.9"/>`;
-  svg += `<circle cx="${cx}" cy="${cy}" r="4" fill="#8fd3ff" stroke="#c9ecff" stroke-width="0.6"/>`;
+  svg += `<circle cx="${cx}" cy="${cy}" r="4" style="fill:var(--sky-earth);stroke:var(--sky-earth-edge)" stroke-width="0.6"/>`;
 
   // Planets: spoke line from center + realistic glowing marker + abbreviation label.
   // Planets that cluster close together in the same stretch of sky are staggered outward
@@ -1194,25 +1229,25 @@ function renderCosmicChart(containerId, planetPositions, ascSidDeg, t, tooltipMo
   });
 
   sorted.forEach(p => {
-    const visual = PLANET_VISUALS[p.key] || { color: "#f4c95d", glow: 1.4, r: 6 };
+    const visual = PLANET_VISUALS[p.key] || { color: "var(--sky-asc)", glow: 1.4, r: 6 };
     const pt = pointAt(p.sidLon, p._cosmicR);
     const spokeStart = pointAt(p.sidLon, 15);
-    svg += `<line x1="${spokeStart.x.toFixed(1)}" y1="${spokeStart.y.toFixed(1)}" x2="${pt.x.toFixed(1)}" y2="${pt.y.toFixed(1)}" stroke="#6a6fa0" stroke-width="0.6" opacity="0.5"/>`;
+    svg += `<line x1="${spokeStart.x.toFixed(1)}" y1="${spokeStart.y.toFixed(1)}" x2="${pt.x.toFixed(1)}" y2="${pt.y.toFixed(1)}" style="stroke:var(--sky-spoke)" stroke-width="0.6" opacity="0.5"/>`;
     svg += `<g class="cosmic-planet" data-planet-key="${p.key}">`;
 
     if (visual.shadow) {
       // Rahu/Ketu are shadow points, not luminous bodies - render as a dim ringed marker instead of a bright glow
-      svg += `<circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="${visual.r}" fill="#141428" stroke="${visual.color}" stroke-width="1.4" opacity="0.9"/>`;
+      svg += `<circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="${visual.r}" style="fill:var(--sky-node-fill);stroke:${visual.color}" stroke-width="1.4"/>`;
     } else {
       if (visual.ring) {
         // Saturn: a simple tilted ellipse suggests its rings
-        svg += `<ellipse cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" rx="${(visual.r * 1.7).toFixed(1)}" ry="${(visual.r * 0.55).toFixed(1)}" fill="none" stroke="${visual.color}" stroke-width="1.1" opacity="0.65" transform="rotate(-20 ${pt.x.toFixed(1)} ${pt.y.toFixed(1)})"/>`;
+        svg += `<ellipse cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" rx="${(visual.r * 1.7).toFixed(1)}" ry="${(visual.r * 0.55).toFixed(1)}" fill="none" style="stroke:${visual.color}" stroke-width="1.1" opacity="0.65" transform="rotate(-20 ${pt.x.toFixed(1)} ${pt.y.toFixed(1)})"/>`;
       }
-      svg += `<circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="${visual.r}" fill="${visual.color}" filter="url(#glow_${p.key})"/>`;
+      svg += `<circle cx="${pt.x.toFixed(1)}" cy="${pt.y.toFixed(1)}" r="${visual.r}" style="fill:${visual.color}" filter="url(#glow_${p.key})"/>`;
     }
 
     const labelPt = pointAt(p.sidLon, p._cosmicR + visual.r + 11);
-    svg += labelPill(labelPt.x, labelPt.y, p.abbrev, 10, "#ffe9b0");
+    svg += labelPill(labelPt.x, labelPt.y, p.abbrev, 10, "var(--sky-planet-label)");
     svg += `</g>`;
   });
 
@@ -1280,10 +1315,26 @@ function renderPanchangaSummary(ctx) {
   const { utcDate, dd, mm, yyyy, hour, min, ss, tzOffset, lat, lon, lon_disp, planetPositions, ascRasi, ascSid, moon, sun, ayanamsa, personName, personGender, t } = ctx;
 
   const pi = getPanchangaI18n();
-  const localDate = new Date(yyyy, mm - 1, dd, hour, min, ss);
-  const weekdayIdx = new Date(yyyy, mm - 1, dd).getDay();
+  // Calendar weekday of the civil birth date (computed in UTC so the browser's own
+  // timezone can never shift it)
+  const civilWeekdayIdx = new Date(Date.UTC(yyyy, mm - 1, dd)).getUTCDay();
+  const civilWeekdayName = pi.weekdayNames[civilWeekdayIdx];
+  const localBirth = new Date(Date.UTC(yyyy, mm - 1, dd, hour, min, ss) - tzOffset * 3600000);
+
+  // The Vedic day runs from sunrise to sunrise. A birth after midnight but before that
+  // morning's sunrise still belongs to the previous day - its weekday, its Dinamana, and
+  // the Nazhika count since sunrise are all taken from the previous day's sunrise.
+  let { sunrise, sunset } = getSunriseSunset(yyyy, mm, dd, tzOffset, lat, lon);
+  let bornBeforeSunrise = false;
+  if (sunrise && localBirth < sunrise) {
+    bornBeforeSunrise = true;
+    const prev = new Date(Date.UTC(yyyy, mm - 1, dd - 1));
+    ({ sunrise, sunset } = getSunriseSunset(prev.getUTCFullYear(), prev.getUTCMonth() + 1, prev.getUTCDate(), tzOffset, lat, lon));
+  }
+  const weekdayIdx = bornBeforeSunrise ? (civilWeekdayIdx + 6) % 7 : civilWeekdayIdx;
   const weekdayName = pi.weekdayNames[weekdayIdx];
   const weekdayLordKey = WEEKDAY_LORDS[weekdayIdx];
+  const localDate = new Date(Date.UTC(yyyy, mm - 1, dd, hour, min, ss)); // wall-clock time, read with getUTC*
 
   const tithi = getTithiInfo(
     (getTropicalLongitude("Sun", utcDate) - ayanamsa + 360) % 360,
@@ -1294,9 +1345,6 @@ function renderPanchangaSummary(ctx) {
     (getTropicalLongitude("Moon", utcDate) - ayanamsa + 360) % 360
   );
   const yoga = getYogaInfo(sun.sidLon, moon.sidLon);
-
-  const { sunrise, sunset } = getSunriseSunset(yyyy, mm, dd, tzOffset, lat, lon);
-  const localBirth = new Date(Date.UTC(yyyy, mm - 1, dd, hour, min, ss) - tzOffset * 3600000);
 
   let dinamanaText = "—", dinamanaNazhikaText = "—", nazhikaAfterSunrise = null, sunriseLocalDisp = "—", sunsetLocalDisp = "—";
   if (sunrise && sunset) {
@@ -1383,7 +1431,7 @@ function renderPanchangaSummary(ctx) {
   const rows = [
     [u.sumName, personName || "—"],
     [u.sumSex, personGender ? t.ui[`genderOpt_${personGender}`] : "—"],
-    [u.sumDob, `${dd} ${pi.monthNames[mm - 1]}, ${yyyy} ${weekdayName}`],
+    [u.sumDob, `${dd} ${pi.monthNames[mm - 1]}, ${yyyy} ${civilWeekdayName}`],
     [u.sumTob, `${formatHMS12(localDate)} ${u.sumStandardTime}`],
     [u.sumTz, `${tzOffset >= 0 ? "" : "-"}${pad2(Math.floor(Math.abs(tzOffset)))}:${pad2(Math.round((Math.abs(tzOffset) % 1) * 60))} ${u.sumEastGreenwich}`],
     [u.sumPlace, `${Math.abs(lon).toFixed(2)}° ${lon >= 0 ? u.sumEast : u.sumWest}, ${Math.abs(lat).toFixed(2)}° ${lat >= 0 ? u.sumNorth : u.sumSouth}`],
@@ -1397,9 +1445,9 @@ function renderPanchangaSummary(ctx) {
     [u.sumDinamanaHM, dinamanaText],
     [u.sumDinamanaNazhika, dinamanaNazhikaText],
     [u.sumLmt, `${u.sumStandardTime} ${lmtCorrectionMin >= 0 ? "+" : "-"} ${Math.abs(lmtCorrectionMin)} ${u.sumMin}`],
-    [u.sumAstroDay, weekdayName],
+    [u.sumAstroDay, bornBeforeSunrise ? `${weekdayName} (${u.preSunriseNote})` : weekdayName],
     [u.sumKalidina, String(kalidina)],
-    [u.sumDasaSystem, "Vimshottari, 1 Year = 365.25 Days"],
+    [u.sumDasaSystem, u.dasaSystemValue],
     [u.sumStarLord, t.planets[NAKSHATRA_LORDS[moon.nakIdx]]],
     [u.sumGanamYoni, `${ganamWord}, ${yoniWord}`],
     [u.sumBirdTree, `${birdWord}, ${treeWord}`],
@@ -1409,9 +1457,18 @@ function renderPanchangaSummary(ctx) {
   ];
 
   const table = document.getElementById("summaryTable");
-  table.innerHTML = rows.map(([label, value]) =>
-    `<tr><td class="summary-label">${label}</td><td class="summary-value">${value}</td></tr>`
-  ).join("");
+  // Built with textContent, never innerHTML: the name field is free text typed by the user
+  table.replaceChildren(...rows.map(([label, value]) => {
+    const tr = document.createElement("tr");
+    const th = document.createElement("td");
+    th.className = "summary-label";
+    th.textContent = label;
+    const td = document.createElement("td");
+    td.className = "summary-value";
+    td.textContent = value;
+    tr.append(th, td);
+    return tr;
+  }));
 }
 
 // ===== KP Star / Sub / Sub-Sub Lord table for every graha =====
@@ -1547,14 +1604,33 @@ function generateChart(silent) {
   const lat = parseFloat(document.getElementById("lat").value);
   const lon = parseFloat(document.getElementById("lon").value);
 
+  const u = LANG[currentLang].ui;
+  const formError = document.getElementById("formError");
+  function fail(msg) {
+    if (!silent) {
+      formError.textContent = msg;
+      formError.classList.remove("hidden");
+    }
+    return false;
+  }
+
   if (!dd || !mm || !yyyy || isNaN(hh12) || isNaN(min) || isNaN(lat) || isNaN(lon)) {
-    if (!silent) alert("Please fill in date, time, and coordinates.");
-    return;
+    return fail(u.errMissing);
   }
-  if (dd < 1 || dd > 31 || mm < 1 || mm > 12 || hh12 < 0 || hh12 > 12 || min < 0 || min > 59) {
-    if (!silent) alert("Please check the date/time values entered.");
-    return;
+  // A date is real only if JavaScript's calendar doesn't roll it over (31/02 -> 3 Mar)
+  const calendarCheck = new Date(Date.UTC(yyyy, mm - 1, dd));
+  calendarCheck.setUTCFullYear(yyyy); // Date.UTC maps years 0-99 to 1900-1999; undo that
+  if (mm < 1 || mm > 12 || dd < 1 || calendarCheck.getUTCMonth() !== mm - 1 || calendarCheck.getUTCDate() !== dd) {
+    return fail(u.errBadDate);
   }
+  if (hh12 < 1 || hh12 > 12 || min < 0 || min > 59 || ss < 0 || ss > 59) {
+    return fail(u.errBadTime);
+  }
+  if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+    return fail(u.errBadCoords);
+  }
+  formError.textContent = "";
+  formError.classList.add("hidden");
 
   // Convert 12-hour clock + AM/PM to 24-hour
   let hour = hh12 % 12;
@@ -1715,6 +1791,13 @@ function applyLanguageToUI() {
   document.getElementById("genderOptOther").textContent = t.genderOpt_other;
   document.getElementById("noteText").textContent = t.note;
   document.getElementById("langLabel").textContent = t.langLabel;
+  document.getElementById("tzHint").textContent = t.tzHint;
+  const sectionsBtn = document.getElementById("sectionsToggleBtn");
+  sectionsBtn.title = t.sectionsTitle;
+  sectionsBtn.setAttribute("aria-label", t.sectionsTitle);
+  refreshThemeToggleLabel();
+  const formError = document.getElementById("formError");
+  if (formError) { formError.textContent = ""; formError.classList.add("hidden"); }
 
   // If a chart was already generated, redraw it in the new language
   if (!document.getElementById("result").classList.contains("hidden")) {
@@ -1751,20 +1834,33 @@ applyLanguageToUI();
 // ===== Dark / Light theme toggle =====
 const themeToggleBtn = document.getElementById("themeToggle");
 
-function applyTheme(theme) {
-  if (theme === "light") {
-    document.body.classList.add("light-theme");
-    themeToggleBtn.textContent = "☀️";
-  } else {
-    document.body.classList.remove("light-theme");
-    themeToggleBtn.textContent = "🌙";
-  }
+const THEME_META_COLOR = { dark: "#10131f", light: "#f5f0e4" };
+
+// The button names the theme it switches TO ("Day" while in the night theme)
+function refreshThemeToggleLabel() {
+  const ui = LANG[currentLang].ui;
+  const btn = document.getElementById("themeToggle"); // looked up here: this also runs before the const below exists
+  const isLight = document.body.classList.contains("light-theme");
+  btn.textContent = isLight ? ui.themeToNight : ui.themeToDay;
+  btn.setAttribute("aria-pressed", String(isLight));
 }
 
-let savedTheme = "dark";
+function applyTheme(theme) {
+  document.body.classList.toggle("light-theme", theme === "light");
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", THEME_META_COLOR[theme === "light" ? "light" : "dark"]);
+  refreshThemeToggleLabel();
+}
+
+// Saved choice wins; otherwise follow the device's light/dark setting
+let savedTheme = null;
 try {
-  savedTheme = localStorage.getItem("natalChartTheme") || "dark";
+  savedTheme = localStorage.getItem("natalChartTheme");
 } catch (e) { /* localStorage unavailable, ignore */ }
+if (!savedTheme) {
+  const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+  savedTheme = prefersLight ? "light" : "dark";
+}
 applyTheme(savedTheme);
 
 themeToggleBtn.addEventListener("click", () => {
@@ -1981,6 +2077,7 @@ const sectionsSidebar = document.getElementById("sectionsSidebar");
 function setSidebarOpen(open) {
   sectionsSidebar.classList.toggle("collapsed", !open);
   document.body.classList.toggle("sidebar-open", open);
+  document.getElementById("sectionsToggleBtn").setAttribute("aria-expanded", String(open));
   if (open) syncSidebarChevrons();
 }
 

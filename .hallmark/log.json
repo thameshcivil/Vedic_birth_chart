@@ -1,0 +1,15 @@
+[
+  {
+    "date": "2026-10-11",
+    "verb": "redesign",
+    "scope": "app",
+    "macrostructure": "Workbench (information architecture preserved)",
+    "theme": "custom",
+    "theme_axes": "dark / roman-serif / warm",
+    "vibe": "observatory almanac: night ink, temple brass, palm-leaf",
+    "enrichment": "none",
+    "nav": "N9 edge-aligned bar",
+    "footer": "Ft2 inline note",
+    "brief": "Vedic birth chart generator, English/Tamil"
+  }
+]
