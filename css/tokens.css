@@ -52,6 +52,9 @@
   --day-small:     oklch(48% 0.2 352);
   --today-ring:    oklch(50% 0.22 352);
   --today-ink:     oklch(99% 0.01 90);
+  --day-selected:  oklch(87% 0.07 290);
+  --cal-line:      oklch(52% 0.14 305 / 0.55);
+  --cal-arrow:     oklch(42% 0.18 310);
 
   --sky-bg-1:    oklch(26% 0.09 300);
   --sky-bg-2:    oklch(15% 0.06 295);
@@ -84,9 +87,9 @@
   --glyph-copper: oklch(63% 0.13 50);
   --glyph-water: oklch(65% 0.12 230);
 
-  --font-display: "Libre Baskerville", "Noto Serif Tamil", "Noto Serif Telugu", "Noto Serif Kannada",
-    "Noto Serif Malayalam", "Noto Serif Devanagari", Georgia, serif;
-  --font-body: "Hind", "Hind Madurai", "Hind Guntur", "Hind Mysuru", "Manjari", system-ui, sans-serif;
+  --font-display: "Aarush Sans", "Noto Sans Tamil", Roboto, system-ui, sans-serif;
+  --font-body: "Aarush Sans", "Noto Sans Tamil", Roboto, system-ui, sans-serif;
+  --font-serif: "Aarush Serif", "Noto Serif", Georgia, serif;
 
   --text-xs: 0.8125rem;
   --text-sm: 0.9375rem;
@@ -156,6 +159,9 @@
   --day-small:     oklch(88% 0.14 85);
   --today-ring:    oklch(86% 0.15 82);
   --today-ink:     oklch(22% 0.08 308);
+  --day-selected:  oklch(44% 0.12 290);
+  --cal-line:      oklch(80% 0.1 80 / 0.4);
+  --cal-arrow:     oklch(84% 0.15 82);
 
   --glyph-dark:  oklch(12% 0.03 300);
   --glyph-line:  oklch(86% 0.04 85);

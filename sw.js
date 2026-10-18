@@ -1,7 +1,7 @@
 // Service worker for the web version (the Android app bundles everything itself).
 // App files are network-first so updates arrive; the cache answers when offline.
 // Bump CACHE_VERSION whenever this file list changes.
-const CACHE_VERSION = "aarush-v3";
+const CACHE_VERSION = "aarush-v4";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -12,6 +12,21 @@ const APP_SHELL = [
   "./apple-touch-icon.png",
   "./css/app.css",
   "./css/fonts.css",
+  "./fonts/noto-sans-devanagari-devanagari-400-normal.woff2",
+  "./fonts/noto-sans-devanagari-devanagari-700-normal.woff2",
+  "./fonts/noto-sans-kannada-kannada-400-normal.woff2",
+  "./fonts/noto-sans-kannada-kannada-700-normal.woff2",
+  "./fonts/noto-sans-latin-400-normal.woff2",
+  "./fonts/noto-sans-latin-700-normal.woff2",
+  "./fonts/noto-sans-latin-ext-400-normal.woff2",
+  "./fonts/noto-sans-latin-ext-700-normal.woff2",
+  "./fonts/noto-sans-malayalam-malayalam-400-normal.woff2",
+  "./fonts/noto-sans-malayalam-malayalam-700-normal.woff2",
+  "./fonts/noto-sans-tamil-tamil-400-normal.woff2",
+  "./fonts/noto-sans-tamil-tamil-700-normal.woff2",
+  "./fonts/noto-sans-telugu-telugu-400-normal.woff2",
+  "./fonts/noto-sans-telugu-telugu-700-normal.woff2",
+  "./fonts/noto-serif-latin-700-normal.woff2",
   "./css/tokens.css",
   "./js/alarms.js",
   "./js/app.js",
@@ -43,28 +58,6 @@ const APP_SHELL = [
   "./js/views/today.js",
   "./js/views/rasi.js",
   "./js/glyphs.js",
-  "./fonts/hind-devanagari-400-normal.woff2",
-  "./fonts/hind-devanagari-600-normal.woff2",
-  "./fonts/hind-guntur-telugu-400-normal.woff2",
-  "./fonts/hind-guntur-telugu-600-normal.woff2",
-  "./fonts/hind-latin-400-normal.woff2",
-  "./fonts/hind-latin-600-normal.woff2",
-  "./fonts/hind-latin-ext-400-normal.woff2",
-  "./fonts/hind-latin-ext-600-normal.woff2",
-  "./fonts/hind-madurai-tamil-400-normal.woff2",
-  "./fonts/hind-madurai-tamil-600-normal.woff2",
-  "./fonts/hind-mysuru-kannada-400-normal.woff2",
-  "./fonts/hind-mysuru-kannada-600-normal.woff2",
-  "./fonts/libre-baskerville-latin-400-normal.woff2",
-  "./fonts/libre-baskerville-latin-700-normal.woff2",
-  "./fonts/libre-baskerville-latin-ext-400-normal.woff2",
-  "./fonts/libre-baskerville-latin-ext-700-normal.woff2",
-  "./fonts/manjari-malayalam-400-normal.woff2",
-  "./fonts/manjari-malayalam-700-normal.woff2",
-  "./fonts/noto-serif-devanagari-devanagari-600-normal.woff2",
-  "./fonts/noto-serif-kannada-kannada-600-normal.woff2",
-  "./fonts/noto-serif-malayalam-malayalam-600-normal.woff2",
-  "./fonts/noto-serif-tamil-tamil-600-normal.woff2",
   "./fonts/noto-serif-telugu-telugu-600-normal.woff2"
 ];
 

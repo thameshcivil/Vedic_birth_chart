@@ -29,7 +29,7 @@ export const DEFAULT_SETTINGS = {
   ayanamsa: "lahiri",       // lahiri | truechitra | kp | raman | suryasiddhanta
   node: "mean",             // mean | true
   timeFormat: "24h",        // 12h | 24h | nazhigai
-  theme: "dark",            // system | light | dark
+  theme: "light",           // system | light | dark
   location: null,           // { name, lat, lon, tz, source: gps|search|manual|default }
   sankalpam: { type: "shubham", name: "", gothram: "", salutation: "", region: "auto", tharpanam: "tila", script: "native" },
   onboarded: false

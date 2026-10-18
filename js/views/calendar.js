@@ -9,6 +9,12 @@ import { esc, monthYear, sameYmd, todayYmd, fmtDate, ymdKey } from "../format.js
 import { getSettings } from "../store.js";
 import { icon } from "../icons.js";
 
+// Solid arrow heads for month / year steps
+const TRI_L = '<svg viewBox="0 0 12 24" aria-hidden="true"><path d="M12 0v24L0 12z"/></svg>';
+const TRI_R = '<svg viewBox="0 0 12 24" aria-hidden="true"><path d="M0 0v24l12-12z"/></svg>';
+const TRI_LL = '<svg viewBox="0 0 26 18" aria-hidden="true"><path d="M13 0v18L0 9zM26 0v18L13 9z"/></svg>';
+const TRI_RR = '<svg viewBox="0 0 26 18" aria-hidden="true"><path d="M0 0v18l13-9zM13 0v18l13-9z"/></svg>';
+
 function daysInMonth(y, m) { return new Date(Date.UTC(y, m, 0)).getUTCDate(); }
 
 export function monthData(year, month, loc) {
@@ -47,7 +53,7 @@ export function renderCalendar(root, app) {
   const head = term("weekdayShort").map((w, i) =>
     `<div class="mcal__dow ${i === 0 ? "is-sun" : ""}" role="columnheader">${esc(w)}</div>`).join("");
   const blanks = Array.from({ length: firstDow }, () => `<div class="mcal__cell is-blank" aria-hidden="true"></div>`).join("");
-  const trailing = (7 - ((firstDow + days.length) % 7)) % 7;
+  const trailing = 42 - firstDow - days.length;  // always six rows, like a printed calendar
   const tail = Array.from({ length: trailing }, () => `<div class="mcal__cell is-blank" aria-hidden="true"></div>`).join("");
 
   const cells = days.map(({ ymd, f, fests, muhurtham }) => {
@@ -83,13 +89,12 @@ export function renderCalendar(root, app) {
 
   root.innerHTML = `
     <div class="mhead">
-      <button class="iconbtn mhead__arrow" data-action="prev-year" aria-label="${esc(t("prevYear"))}">${icon("dblLeft")}</button>
-      <button class="iconbtn mhead__arrow" data-action="prev-month" aria-label="${esc(t("prevMonth"))}">${icon("chevronLeft")}</button>
+      <button class="mhead__arrow" data-action="prev-year" aria-label="${esc(t("prevYear"))}">${TRI_LL}</button>
+      <button class="mhead__arrow mhead__arrow--single" data-action="prev-month" aria-label="${esc(t("prevMonth"))}">${TRI_L}</button>
       <button class="mhead__title" data-action="pick-month">${esc(monthName)} ${year}</button>
-      <button class="iconbtn mhead__arrow" data-action="next-month" aria-label="${esc(t("nextMonth"))}">${icon("chevronRight")}</button>
-      <button class="iconbtn mhead__arrow" data-action="next-year" aria-label="${esc(t("nextYear"))}">${icon("dblRight")}</button>
+      <button class="mhead__arrow mhead__arrow--single" data-action="next-month" aria-label="${esc(t("nextMonth"))}">${TRI_R}</button>
+      <button class="mhead__arrow" data-action="next-year" aria-label="${esc(t("nextYear"))}">${TRI_RR}</button>
     </div>
-    <p class="mhead__span">${esc(isSolar ? span.solar : span.lunar)} <span class="muted">· ${esc(isSolar ? span.lunar : span.solar)}</span></p>
 
     <div class="mcal" role="grid" data-swipe="month">
       ${head}${blanks}${cells}${tail}

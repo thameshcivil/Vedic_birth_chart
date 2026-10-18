@@ -38,5 +38,5 @@ export function glyphFor(fests, muhurtham) {
 
 export function glyph(name) {
   if (!name || !G[name]) return "";
-  return `<svg class="glyph" viewBox="0 0 24 24" aria-hidden="true">${G[name]}</svg>`;
+  return `<svg class="glyph" viewBox="2 2 20 20" aria-hidden="true">${G[name]}</svg>`;
 }
