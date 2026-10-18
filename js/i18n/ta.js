@@ -6,6 +6,7 @@ export default {
   brand: "ஆருஷ் பஞ்சாங்கம்",
 
   ui: {
+    menu: "மேலும்", rasiChartMenu: "இராசி கட்டம்", dinaVishesham: "தின விசேஷம்", naalVagai: "நாள் வகை", dtSelected: "தேர்ந்தெடுத்த நாள்", dtKari: "கரி நாள்", dtKavanam: "கவனம்", dtSadharana: "சாதாரண நாள்", dtMuhurtham: "சுப முகூர்த்த நாள்", rithuSolar: "ருது (சௌரமானம்)", rithuLunar: "ருது (சாந்த்ரமானம்)", rasiDetails: "இராசி தகவல்கள்", dashaBhukti: "தசா புக்தி", navamsa: "நவாம்சம்", rasiCenter: "இராசி", now: "இப்போது", padaN: "பாதம்-{n}", prevYear: "முந்தைய ஆண்டு", nextYear: "அடுத்த ஆண்டு", lagnaShort: "லக்", kaalaNow: "கால விபாகம்",
     navToday: "இன்று", navCalendar: "நாள்காட்டி", navJathagam: "ஜாதகம்", navSankalpam: "சங்கல்பம்", navAlarms: "அலாரம்",
     settings: "அமைப்புகள்", back: "பின்", close: "மூடு", done: "முடிந்தது", cancel: "ரத்து", save: "சேமி", delete: "நீக்கு",
     edit: "திருத்து", add: "சேர்", share: "பகிர்", copy: "நகலெடு", copied: "நகலெடுக்கப்பட்டது", print: "PDF ஆக சேமி", today: "இன்று",

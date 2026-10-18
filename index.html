@@ -15,27 +15,36 @@
 </head>
 <body>
   <header class="appbar">
-    <span class="appbar__brand">Aarush Panchangam</span>
-    <button class="appbar__loc" data-action="set-location"></button>
-    <button class="iconbtn" data-action="open-settings" aria-label="Settings">
-      <svg class="icon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/><circle cx="12" cy="12" r="6.2"/></svg>
-    </button>
+    <button class="appbar__back iconbtn" data-action="nav-back" hidden aria-label="Back"></button>
+    <span class="appbar__logo" aria-hidden="true"><svg viewBox="0 0 108 108"><rect x="18" y="18" width="72" height="72" rx="18" fill="var(--accent)"/><g fill="var(--accent-ink)"><path d="M54,44a16,16 0,0 1,16 16H38a16,16 0,0 1,16 -16z"/><path d="M31,63h46v3.2H31z"/><path d="M52.4,30h3.2v9h-3.2zM34.6,38.8l2.3,-2.3 6.4,6.4 -2.3,2.3zM64.7,42.9l6.4,-6.4 2.3,2.3 -6.4,6.4z"/><path d="M41,71h26v2.4H41zM48,77.5h12v2.4H48z"/></g></svg></span>
+    <h1 class="appbar__title">Aarush Panchangam</h1>
+    <button class="iconbtn appbar__cal" data-action="open-calendar" aria-label="Calendar"></button>
+    <button class="iconbtn" data-action="open-menu" aria-label="More options" aria-haspopup="menu"></button>
   </header>
+  <nav class="toptabs" aria-label="Main"></nav>
+  <div id="menu" class="menu" hidden></div>
 
   <main class="main">
     <section data-view="today"></section>
     <section data-view="calendar" hidden></section>
-    <section data-view="jathagam" hidden></section>
     <section data-view="sankalpam" hidden></section>
+    <section data-view="reminders" hidden></section>
     <section data-view="alarms" hidden></section>
+    <section data-view="stopwatch" hidden></section>
+    <section data-view="jathagam" hidden></section>
+    <section data-view="rasi" hidden></section>
     <section data-view="settings" hidden></section>
   </main>
 
-  <nav class="tabbar" aria-label="Main"></nav>
+  <div class="fabs" data-fabs hidden>
+    <button class="fab" data-action="prev-day" aria-label="Previous day"></button>
+    <button class="fab" data-action="next-day" aria-label="Next day"></button>
+  </div>
 
   <div id="sheet" class="sheet" hidden></div>
   <div id="toast" class="toast" role="status" hidden></div>
   <input type="date" id="datepicker" class="sr-only" tabindex="-1" aria-hidden="true">
+  <input type="month" id="monthpicker" class="sr-only" tabindex="-1" aria-hidden="true">
 
   <noscript><p class="notice">Aarush Panchangam needs JavaScript.</p></noscript>
   <script src="js/vendor/astronomy.min.js"></script>

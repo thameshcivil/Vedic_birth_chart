@@ -6,6 +6,7 @@ export default {
   brand: "Aarush Panchangam",
 
   ui: {
+    menu: "More options", rasiChartMenu: "Raasi chart", dinaVishesham: "Day's special", naalVagai: "Day type", dtSelected: "Selected day", dtKari: "Kari naal", dtKavanam: "Take care", dtSadharana: "Ordinary day", dtMuhurtham: "Muhurtham day", rithuSolar: "Rithu (solar)", rithuLunar: "Rithu (lunar)", rasiDetails: "Raasi details", dashaBhukti: "Dasa bhukti", navamsa: "Navamsa", rasiCenter: "Raasi", now: "Now", padaN: "Pada {n}", prevYear: "Previous year", nextYear: "Next year", lagnaShort: "Asc", kaalaNow: "Kaala vibhagam",
     // navigation
     navToday: "Today", navCalendar: "Calendar", navJathagam: "Jathagam", navSankalpam: "Sankalpam", navAlarms: "Alarms",
     settings: "Settings", back: "Back", close: "Close", done: "Done", cancel: "Cancel", save: "Save", delete: "Delete",

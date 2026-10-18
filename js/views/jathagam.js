@@ -12,7 +12,7 @@ import { esc, pad2, fmtTime, fmtDate } from "../format.js";
 import { getBirth, saveBirth, getSettings } from "../store.js";
 import { icon } from "../icons.js";
 
-const CHART_LAYOUT = {
+export const CHART_LAYOUT = {
   11: [0, 0], 0: [0, 1], 1: [0, 2], 2: [0, 3], 10: [1, 0], 3: [1, 3],
   9: [2, 0], 4: [2, 3], 8: [3, 0], 7: [3, 1], 6: [3, 2], 5: [3, 3]
 };
@@ -27,11 +27,11 @@ const KALI_YUGA_EPOCH_JD = 588465.5;
 
 const state = { result: null, editing: true, sky: { mode: "here", date: null }, tip: null };
 
-const nakIndex = (lon) => Math.floor(lon / (360 / 27));
-const padaOf = (lon) => Math.floor((lon % (360 / 27)) / (360 / 108)) + 1;
-const navamsaIndex = (lon) => (Math.floor(lon / 30) * 9 + Math.floor((lon % 30) / (30 / 9))) % 12;
+export const nakIndex = (lon) => Math.floor(lon / (360 / 27));
+export const padaOf = (lon) => Math.floor((lon % (360 / 27)) / (360 / 108)) + 1;
+export const navamsaIndex = (lon) => (Math.floor(lon / 30) * 9 + Math.floor((lon % 30) / (30 / 9))) % 12;
 
-function dms(deg) {
+export function dms(deg) {
   const d = Math.floor(deg);
   const mF = (deg - d) * 60;
   const m = Math.floor(mF);
@@ -47,7 +47,7 @@ function offsetZone(off) {
   return `UTC${sign}${pad2(h)}:${pad2(m)}`;
 }
 
-function positionsAt(date) {
+export function positionsAt(date) {
   return allPositions(date).map((p) => ({
     ...p, rasi: Math.floor(p.lon / 30), nak: nakIndex(p.lon), pada: padaOf(p.lon)
   }));
@@ -205,7 +205,7 @@ function fmtDashaDate(d, tz) {
   return `${fmtDate(zonedYmd(d, tz), { day: "numeric", month: "short", year: "numeric" })}`;
 }
 
-function dashaHtml(dasha, tz) {
+export function dashaHtml(dasha, tz) {
   const now = new Date();
   return dasha.map((md, i) => {
     const cur = now >= md.start && now < md.end;

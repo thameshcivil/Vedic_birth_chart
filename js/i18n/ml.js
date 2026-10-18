@@ -10,6 +10,7 @@ export default {
   brand: "ആരുഷ് പഞ്ചാംഗം",
 
   ui: {
+    menu: "കൂടുതൽ", rasiChartMenu: "രാശി ചക്രം", dinaVishesham: "ദിന വിശേഷം", naalVagai: "ദിവസ തരം", dtSelected: "തിരഞ്ഞെടുത്ത ദിവസം", dtKari: "കരി നാൾ", dtKavanam: "ശ്രദ്ധ", dtSadharana: "സാധാരണ ദിവസം", dtMuhurtham: "ശുഭ മുഹൂർത്ത ദിവസം", rithuSolar: "ഋതു (സൗരമാനം)", rithuLunar: "ഋതു (ചാന്ദ്രമാനം)", rasiDetails: "രാശി വിവരങ്ങൾ", dashaBhukti: "ദശാ അപഹാരം", navamsa: "നവാംശം", rasiCenter: "രാശി", now: "ഇപ്പോൾ", padaN: "പാദം-{n}", prevYear: "കഴിഞ്ഞ വർഷം", nextYear: "അടുത്ത വർഷം", lagnaShort: "ലഗ്നം", kaalaNow: "കാല വിഭാഗം",
     navToday: "ഇന്ന്", navCalendar: "കലണ്ടർ", navJathagam: "ജാതകം", navSankalpam: "സങ്കല്പം", navAlarms: "അലാറം",
     settings: "ക്രമീകരണങ്ങൾ", back: "പിന്നോട്ട്", close: "അടയ്ക്കുക", done: "കഴിഞ്ഞു", cancel: "റദ്ദാക്കുക", save: "സേവ് ചെയ്യുക", delete: "നീക്കം ചെയ്യുക",
     edit: "മാറ്റുക", add: "ചേർക്കുക", share: "പങ്കിടുക", copy: "പകർത്തുക", copied: "പകർത്തി", print: "PDF ആയി സേവ് ചെയ്യുക", today: "ഇന്ന്",

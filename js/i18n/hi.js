@@ -6,6 +6,7 @@ export default {
   brand: "आरुष पंचांग",
 
   ui: {
+    menu: "और", rasiChartMenu: "राशि चक्र", dinaVishesham: "दिन विशेष", naalVagai: "दिन का प्रकार", dtSelected: "चुना हुआ दिन", dtKari: "करि नाळ", dtKavanam: "सावधान", dtSadharana: "सामान्य दिन", dtMuhurtham: "शुभ मुहूर्त दिन", rithuSolar: "ऋतु (सौरमान)", rithuLunar: "ऋतु (चान्द्रमान)", rasiDetails: "राशि विवरण", dashaBhukti: "दशा भुक्ति", navamsa: "नवांश", rasiCenter: "राशि", now: "अभी", padaN: "पाद-{n}", prevYear: "पिछला वर्ष", nextYear: "अगला वर्ष", lagnaShort: "लग्न", kaalaNow: "काल विभाग",
     navToday: "आज", navCalendar: "कैलेंडर", navJathagam: "जन्मकुंडली", navSankalpam: "संकल्प", navAlarms: "अलार्म",
     settings: "सेटिंग्स", back: "वापस", close: "बंद करें", done: "हो गया", cancel: "रद्द करें", save: "सहेजें", delete: "हटाएँ",
     edit: "बदलें", add: "जोड़ें", share: "साझा करें", copy: "कॉपी करें", copied: "कॉपी हो गया", print: "PDF के रूप में सहेजें", today: "आज",

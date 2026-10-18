@@ -33,8 +33,8 @@ function alarmWhen(a) {
   return `${t(ANCHOR_LABEL[a.anchor])}${off}`;
 }
 
-export function renderAlarms(root, app) {
-  const tab = app.state.alarmTab || "alarms";
+export function renderAlarms(root, app, fixedTab) {
+  const tab = fixedTab || app.state.alarmTab || "alarms";
   const loc = app.state.loc;
   const tabs = ["alarms", "reminders", "stopwatch"].map((k) =>
     `<button role="tab" aria-selected="${tab === k}" class="${tab === k ? "is-on" : ""}" data-action="alarm-tab" data-tab="${k}">${esc(t(k))}</button>`).join("");
@@ -85,7 +85,7 @@ export function renderAlarms(root, app) {
   }
 
   root.innerHTML = `
-    <div class="segmented" role="tablist">${tabs}</div>
+    ${fixedTab ? "" : `<div class="segmented" role="tablist">${tabs}</div>`}
     ${tab !== "stopwatch" ? banner : ""}
     ${body}`;
   if (tab === "stopwatch" && sw.running) tickStopwatch(root);

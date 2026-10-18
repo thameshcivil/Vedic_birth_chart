@@ -1,8 +1,9 @@
-// Month calendar: Tamil date or tithi under each day, observance marks, and the
-// month's observances listed below the grid.
+// Month calendar: English date with the Tamil date (or tithi) in the corner, an
+// observance glyph, cells coloured by day type, and the month's observances below.
 
 import { dayFacts } from "../panchang.js";
-import { festivalsOn, isShubhaMuhurtaDay } from "../festivals.js";
+import { festivalsOn, isShubhaMuhurtaDay, dayType } from "../festivals.js";
+import { glyph, glyphFor } from "../glyphs.js";
 import { t, term, festivalName, solarMonthName, lunarMonthName, tithiName } from "../i18n/index.js";
 import { esc, monthYear, sameYmd, todayYmd, fmtDate, ymdKey } from "../format.js";
 import { getSettings } from "../store.js";
@@ -41,37 +42,33 @@ export function renderCalendar(root, app) {
   const firstDow = days[0].f.weekday;
   const today = todayYmd(loc.tz);
   const isSolar = settings.calendar === "tamil";
+  const monthName = new Date(Date.UTC(year, month - 1, 1)).toLocaleDateString("en-GB", { month: "short", timeZone: "UTC" });
 
   const head = term("weekdayShort").map((w, i) =>
-    `<div class="cal__dow ${i === 0 ? "is-sun" : ""}" role="columnheader">${esc(w)}</div>`).join("");
-  const blanks = Array.from({ length: firstDow }, () => `<div class="cal__cell is-blank" aria-hidden="true"></div>`).join("");
+    `<div class="mcal__dow ${i === 0 ? "is-sun" : ""}" role="columnheader">${esc(w)}</div>`).join("");
+  const blanks = Array.from({ length: firstDow }, () => `<div class="mcal__cell is-blank" aria-hidden="true"></div>`).join("");
+  const trailing = (7 - ((firstDow + days.length) % 7)) % 7;
+  const tail = Array.from({ length: trailing }, () => `<div class="mcal__cell is-blank" aria-hidden="true"></div>`).join("");
 
   const cells = days.map(({ ymd, f, fests, muhurtham }) => {
-    const sub = isSolar
-      ? (f.solarDay === 1 ? solarMonthName(f.solarMonth) : String(f.solarDay))
-      : `${(f.tithiSunrise % 15) + 1}${f.tithiSunrise === 14 ? "●" : f.tithiSunrise === 29 ? "○" : ""}`;
-    const kinds = [...new Set(fests.map((x) => x.kind))];
-    const marks = kinds.map((k) => `<i class="dot dot--${k}"></i>`).join("") + (muhurtham ? `<i class="dot dot--muhurtham"></i>` : "");
-    const major = fests.find((x) => x.kind === "festival");
+    const small = isSolar ? f.solarDay : (f.tithiSunrise % 15) + 1;
+    const kind = dayType(f);
+    const g = glyphFor(fests, muhurtham);
     const cls = [
-      "cal__cell",
-      f.weekday === 0 ? "is-sun" : "",
+      "mcal__cell", `is-${kind}`,
       sameYmd(ymd, today) ? "is-today" : "",
-      sameYmd(ymd, date) ? "is-selected" : "",
-      f.careful ? "is-careful" : "",
-      major ? "has-festival" : ""
+      sameYmd(ymd, date) ? "is-selected" : ""
     ].join(" ");
-    const label = `${fmtDate(ymd)}${fests.length ? ": " + fests.map((x) => festivalName(x.id)).join(", ") : ""}`;
+    const label = `${fmtDate(ymd)}${isSolar ? ` · ${solarMonthName(f.solarMonth)} ${f.solarDay}` : ""}${fests.length ? ": " + fests.map((x) => festivalName(x.id)).join(", ") : ""}`;
     return `<button class="${cls}" data-action="open-day" data-ymd="${ymdKey(ymd)}" aria-label="${esc(label)}">
-      <span class="cal__num">${ymd.day}</span>
-      <span class="cal__sub">${esc(sub)}</span>
-      <span class="cal__marks">${marks}</span>
+      <span class="mcal__glyph">${glyph(g)}</span>
+      <span class="mcal__small">${small}</span>
+      <span class="mcal__num">${ymd.day}</span>
     </button>`;
   }).join("");
 
-  const list = days.filter((d) => d.fests.length || d.muhurtham).map(({ ymd, f, fests, muhurtham }) => {
-    const names = fests.map((x) => `<li class="evt evt--${x.kind}">${esc(festivalName(x.id))}</li>`).join("") +
-      (muhurtham ? `<li class="evt evt--muhurtham">${esc(t("shubhaMuhurtam"))}</li>` : "");
+  const list = days.filter((d) => d.fests.length).map(({ ymd, f, fests }) => {
+    const names = fests.map((x) => `<li class="evt evt--${x.kind}">${esc(festivalName(x.id))}</li>`).join("");
     return `<li class="evrow">
       <button class="evrow__date" data-action="open-day" data-ymd="${ymdKey(ymd)}">
         <span class="evrow__num">${ymd.day}</span>
@@ -84,46 +81,32 @@ export function renderCalendar(root, app) {
     </li>`;
   }).join("");
 
-  const yearOptions = [];
-  for (let y = year - 60; y <= year + 60; y++) yearOptions.push(`<option value="${y}" ${y === year ? "selected" : ""}>${y}</option>`);
-
   root.innerHTML = `
-    <div class="calhead">
-      <button class="iconbtn" data-action="prev-month" aria-label="${esc(t("prevMonth"))}">${icon("chevronLeft")}</button>
-      <div class="calhead__title">
-        <h2>${esc(monthYear(year, month))}</h2>
-        <p class="calhead__span">${esc(isSolar ? span.solar : span.lunar)}</p>
-        <p class="calhead__span muted">${esc(isSolar ? span.lunar : span.solar)}</p>
-      </div>
-      <button class="iconbtn" data-action="next-month" aria-label="${esc(t("nextMonth"))}">${icon("chevronRight")}</button>
+    <div class="mhead">
+      <button class="iconbtn mhead__arrow" data-action="prev-year" aria-label="${esc(t("prevYear"))}">${icon("dblLeft")}</button>
+      <button class="iconbtn mhead__arrow" data-action="prev-month" aria-label="${esc(t("prevMonth"))}">${icon("chevronLeft")}</button>
+      <button class="mhead__title" data-action="pick-month">${esc(monthName)} ${year}</button>
+      <button class="iconbtn mhead__arrow" data-action="next-month" aria-label="${esc(t("nextMonth"))}">${icon("chevronRight")}</button>
+      <button class="iconbtn mhead__arrow" data-action="next-year" aria-label="${esc(t("nextYear"))}">${icon("dblRight")}</button>
     </div>
-    <div class="caltools no-print">
-      <label class="field field--inline"><span>${esc(t("selectYear"))}</span>
-        <select data-action="pick-year">${yearOptions.join("")}</select></label>
-      <button class="btn btn--small btn--ghost" data-action="cal-today">${esc(t("today"))}</button>
+    <p class="mhead__span">${esc(isSolar ? span.solar : span.lunar)} <span class="muted">· ${esc(isSolar ? span.lunar : span.solar)}</span></p>
+
+    <div class="mcal" role="grid" data-swipe="month">
+      ${head}${blanks}${cells}${tail}
     </div>
 
-    <div class="cal" role="grid" data-swipe="month">
-      ${head}${blanks}${cells}
-    </div>
-
-    <ul class="legend">
-      <li><i class="dot dot--festival"></i>${esc(t("legendFestival"))}</li>
-      <li><i class="dot dot--vratham"></i>${esc(t("legendVratham"))}</li>
-      <li><i class="dot dot--tharpanam"></i>${esc(t("legendTharpanam"))}</li>
-      <li><i class="dot dot--muhurtham"></i>${esc(t("legendMuhurtham"))}</li>
-      <li><i class="swatch swatch--careful"></i>${esc(t("legendKari"))}</li>
+    <ul class="mlegend">
+      <li class="is-selected">${esc(t("dtSelected"))}</li>
+      <li class="is-kari">${esc(t("dtKari"))}</li>
+      <li class="is-kavanam">${esc(t("dtKavanam"))}</li>
+      <li class="is-sadharana">${esc(t("dtSadharana"))}</li>
+      <li class="is-muhurtham">${esc(t("dtMuhurtham"))}</li>
     </ul>
 
     <section class="monthlist">
       <h3 class="section-title">${esc(t("monthEvents"))}</h3>
       ${list ? `<ul class="evrows">${list}</ul>` : `<p class="muted">${esc(t("noEventsMonth"))}</p>`}
     </section>
-
-    <div class="actions no-print">
-      <button class="btn" data-action="share-month">${icon("share")}${esc(t("shareMonth"))}</button>
-      <button class="btn btn--ghost" data-action="print-month">${icon("print")}${esc(t("exportPdf"))}</button>
-    </div>
   `;
 }
 

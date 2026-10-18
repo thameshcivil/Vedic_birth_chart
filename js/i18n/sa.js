@@ -8,6 +8,7 @@ export default {
   brand: "आरुष पञ्चाङ्गम्",
 
   ui: {
+    menu: "अधिकम्", rasiChartMenu: "राशिचक्रम्", dinaVishesham: "दिनविशेषः", naalVagai: "दिनप्रकारः", dtSelected: "चितं दिनम्", dtKari: "करिदिनम्", dtKavanam: "सावधानम्", dtSadharana: "साधारणदिनम्", dtMuhurtham: "शुभमुहूर्तदिनम्", rithuSolar: "ऋतुः (सौरमानम्)", rithuLunar: "ऋतुः (चान्द्रमानम्)", rasiDetails: "राशिविवरणम्", dashaBhukti: "दशाभुक्तिः", navamsa: "नवांशः", rasiCenter: "राशिः", now: "इदानीम्", padaN: "पादः-{n}", prevYear: "पूर्ववर्षम्", nextYear: "अग्रिमवर्षम्", lagnaShort: "लग्नम्", kaalaNow: "कालविभागः",
     navToday: "अद्य", navCalendar: "दिनदर्शिका", navJathagam: "जातकम्", navSankalpam: "सङ्कल्पः", navAlarms: "सूचकाः",
     settings: "विन्यासाः", back: "पृष्ठतः", close: "पिधत्ताम्", done: "सम्पन्नम्", cancel: "निरस्यताम्", save: "रक्ष्यताम्", delete: "अपनीयताम्",
     edit: "परिवर्त्यताम्", add: "योज्यताम्", share: "प्रेष्यताम्", copy: "प्रतिलिख्यताम्", copied: "प्रतिलिखितम्", print: "PDF रूपेण रक्ष्यताम्", today: "अद्य",

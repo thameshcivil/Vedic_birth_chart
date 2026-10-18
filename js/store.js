@@ -11,7 +11,7 @@ export const DEFAULT_LOCATION = { name: "Chennai", lat: 13.0827, lon: 80.2707, t
 function guessLanguage() {
   const nav = (typeof navigator !== "undefined" && navigator.language) || "en";
   const code = nav.slice(0, 2).toLowerCase();
-  return ["ta", "te", "kn", "ml", "hi", "sa"].includes(code) ? code : "en";
+  return ["ta", "te", "kn", "ml", "hi", "sa"].includes(code) ? code : "ta";
 }
 
 function deviceTimeZone() {
@@ -28,7 +28,7 @@ export const DEFAULT_SETTINGS = {
   lunar: "amanta",          // amanta | purnimanta
   ayanamsa: "lahiri",       // lahiri | truechitra | kp | raman | suryasiddhanta
   node: "mean",             // mean | true
-  timeFormat: "12h",        // 12h | 24h | nazhigai
+  timeFormat: "24h",        // 12h | 24h | nazhigai
   theme: "system",          // system | light | dark
   location: null,           // { name, lat, lon, tz, source: gps|search|manual|default }
   sankalpam: { type: "shubham", name: "", gothram: "", salutation: "", region: "auto", tharpanam: "tila", script: "native" },

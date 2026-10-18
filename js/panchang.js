@@ -331,6 +331,8 @@ export function computePanchang(ymd, loc) {
   const nextMidnight = new Date(midnight.getTime() + DAY_MS + 3600000);
   if (p.moonrise && p.moonrise > nextMidnight) p.moonrise = null;
   if (p.moonset && p.moonset > nextMidnight) p.moonset = null;
+  // Panchangam convention: the moonset that follows the day's moonrise (may fall after midnight)
+  p.moonsetAfterRise = p.moonrise ? riseSet("Moon", loc.lat, loc.lon, p.moonrise, -1, 1.2) : p.moonset;
 
   p.tithis = segments("tithi", sunrise, nextSunrise);
   p.nakshatras = segments("nakshatra", sunrise, nextSunrise);

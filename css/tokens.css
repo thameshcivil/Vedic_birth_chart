@@ -75,6 +75,28 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
   --dur: 180ms;
+
+  --bar-bg:      oklch(47% 0.15 36);
+  --bar-ink:     oklch(97% 0.02 80);
+  --bar-ink-2:   oklch(97% 0.02 80 / 0.72);
+  --tabs-bg:     oklch(91.5% 0.03 78);
+  --day-kari:      oklch(86% 0.07 25);
+  --day-kavanam:   oklch(94% 0.04 80);
+  --day-sadharana: oklch(93% 0.05 150);
+  --day-muhurtham: oklch(82% 0.11 145);
+  --day-small:   oklch(47% 0.15 36);
+  --glyph-dark:  oklch(26% 0.012 60);
+  --glyph-line:  oklch(30% 0.03 50);
+  --glyph-moon:  oklch(94% 0.02 90);
+  --glyph-red:   oklch(55% 0.19 28);
+  --glyph-gold:  oklch(78% 0.14 80);
+  --glyph-ash:   oklch(92% 0.01 80);
+  --glyph-sweet: oklch(90% 0.05 85);
+  --glyph-flame: oklch(70% 0.18 50);
+  --glyph-pink:  oklch(70% 0.13 0);
+  --glyph-good:  oklch(55% 0.12 150);
+  --glyph-copper: oklch(62% 0.12 50);
+  --glyph-water: oklch(65% 0.1 240);
   color-scheme: light;
 }
 
@@ -99,5 +121,17 @@
   --tharpanam:   oklch(76% 0.07 260);
   --focus:       oklch(81% 0.13 78);
   --shadow:      oklch(5% 0.01 50 / 0.5);
+
+  --bar-bg:      oklch(30% 0.06 40);
+  --bar-ink:     oklch(94% 0.02 80);
+  --bar-ink-2:   oklch(94% 0.02 80 / 0.7);
+  --tabs-bg:     oklch(24% 0.019 55);
+  --day-kari:      oklch(37% 0.08 25);
+  --day-kavanam:   oklch(27% 0.025 65);
+  --day-sadharana: oklch(30% 0.045 155);
+  --day-muhurtham: oklch(43% 0.09 150);
+  --day-small:   oklch(81% 0.13 78);
+  --glyph-dark:  oklch(14% 0.01 60);
+  --glyph-line:  oklch(82% 0.03 80);
   color-scheme: dark;
 }

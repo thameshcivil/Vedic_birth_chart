@@ -10,6 +10,7 @@ export default {
   brand: "ಆರುಷ್ ಪಂಚಾಂಗ",
 
   ui: {
+    menu: "ಇನ್ನಷ್ಟು", rasiChartMenu: "ರಾಶಿ ಚಕ್ರ", dinaVishesham: "ದಿನ ವಿಶೇಷ", naalVagai: "ದಿನದ ಬಗೆ", dtSelected: "ಆಯ್ದ ದಿನ", dtKari: "ಕರಿ ನಾಳ್", dtKavanam: "ಎಚ್ಚರ", dtSadharana: "ಸಾಮಾನ್ಯ ದಿನ", dtMuhurtham: "ಶುಭ ಮುಹೂರ್ತ ದಿನ", rithuSolar: "ಋತು (ಸೌರಮಾನ)", rithuLunar: "ಋತು (ಚಾಂದ್ರಮಾನ)", rasiDetails: "ರಾಶಿ ವಿವರ", dashaBhukti: "ದಶಾ ಭುಕ್ತಿ", navamsa: "ನವಾಂಶ", rasiCenter: "ರಾಶಿ", now: "ಈಗ", padaN: "ಪಾದ-{n}", prevYear: "ಹಿಂದಿನ ವರ್ಷ", nextYear: "ಮುಂದಿನ ವರ್ಷ", lagnaShort: "ಲಗ್ನ", kaalaNow: "ಕಾಲ ವಿಭಾಗ",
     navToday: "ಇಂದು", navCalendar: "ಕ್ಯಾಲೆಂಡರ್", navJathagam: "ಜಾತಕ", navSankalpam: "ಸಂಕಲ್ಪ", navAlarms: "ಅಲಾರಂ",
     settings: "ಸೆಟ್ಟಿಂಗ್‌ಗಳು", back: "ಹಿಂದೆ", close: "ಮುಚ್ಚು", done: "ಮುಗಿಯಿತು", cancel: "ರದ್ದು", save: "ಉಳಿಸು", delete: "ಅಳಿಸು",
     edit: "ಬದಲಿಸು", add: "ಸೇರಿಸು", share: "ಹಂಚಿಕೊ", copy: "ನಕಲಿಸು", copied: "ನಕಲಾಯಿತು", print: "PDF ಆಗಿ ಉಳಿಸು", today: "ಇಂದು",

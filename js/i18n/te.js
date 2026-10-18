@@ -10,6 +10,7 @@ export default {
   brand: "ఆరుష్ పంచాంగం",
 
   ui: {
+    menu: "మరిన్ని", rasiChartMenu: "రాశి చక్రం", dinaVishesham: "దిన విశేషం", naalVagai: "రోజు రకం", dtSelected: "ఎంచుకున్న రోజు", dtKari: "కరి నాళ్", dtKavanam: "జాగ్రత్త", dtSadharana: "సాధారణ రోజు", dtMuhurtham: "శుభ ముహూర్త రోజు", rithuSolar: "ఋతువు (సౌరమానం)", rithuLunar: "ఋతువు (చాంద్రమానం)", rasiDetails: "రాశి వివరాలు", dashaBhukti: "దశ భుక్తి", navamsa: "నవాంశ", rasiCenter: "రాశి", now: "ఇప్పుడు", padaN: "పాదం-{n}", prevYear: "ముందు సంవత్సరం", nextYear: "తర్వాతి సంవత్సరం", lagnaShort: "లగ్న", kaalaNow: "కాల విభాగం",
     navToday: "ఈరోజు", navCalendar: "క్యాలెండర్", navJathagam: "జాతకం", navSankalpam: "సంకల్పం", navAlarms: "అలారం",
     settings: "సెట్టింగ్‌లు", back: "వెనుకకు", close: "మూసివేయి", done: "పూర్తి", cancel: "రద్దు", save: "సేవ్ చేయి", delete: "తొలగించు",
     edit: "మార్చు", add: "జోడించు", share: "పంచుకో", copy: "కాపీ చేయి", copied: "కాపీ అయింది", print: "PDFగా సేవ్ చేయి", today: "ఈరోజు",

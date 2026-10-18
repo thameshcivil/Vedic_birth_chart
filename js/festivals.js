@@ -331,3 +331,11 @@ export function isShubhaMuhurtaDay(p) {
   return GOOD_TITHI.has(p.tithiSunrise + 1) && GOOD_NAK.has(p.nakSunrise) && GOOD_WEEKDAY.has(p.weekday) &&
     !p.kariNaal && !p.adhika && ![3, 5, 8].includes(p.solarMonth) && !p.careful;
 }
+
+/** Day type shown in the calendar and on the day page (naal vagai). */
+export function dayType(p) {
+  if (p.kariNaal) return "kari";
+  if (isShubhaMuhurtaDay(p)) return "muhurtham";
+  if (p.careful) return "kavanam";
+  return "sadharana";
+}
