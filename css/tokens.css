@@ -1,0 +1,103 @@
+/* Aarush Panchangam · theme "sheet almanac"
+ * Inspo references: goodeggs-com (cream, terracotta, deep-green action), mooala-com
+ * (Libre Baskerville over a humanist sans), bento-grid macrostructure.
+ * Light: palm-leaf cream paper, iron-gall ink, kumkum terracotta, turmeric, temple green.
+ * Dark: lamp-black brown with turmeric and terracotta.
+ * Every colour and font in the app comes from these tokens. */
+
+:root,
+:root[data-theme="light"] {
+  --paper:       oklch(95.6% 0.021 80);
+  --paper-2:     oklch(98.6% 0.009 85);
+  --paper-3:     oklch(91.5% 0.03 78);
+  --rule:        oklch(86.5% 0.028 74);
+  --rule-2:      oklch(75% 0.035 68);
+  --ink:         oklch(24% 0.03 45);
+  --ink-2:       oklch(34% 0.03 48);
+  --muted:       oklch(48% 0.03 55);
+  --accent:      oklch(52% 0.155 37);      /* kumkum terracotta */
+  --accent-ink:  oklch(98.6% 0.009 85);
+  --accent-soft: oklch(52% 0.155 37 / 0.1);
+  --turmeric:    oklch(73% 0.15 72);
+  --turmeric-soft: oklch(80% 0.13 80 / 0.28);
+  --good:        oklch(41% 0.085 160);     /* temple-door green */
+  --good-soft:   oklch(41% 0.085 160 / 0.09);
+  --bad:         oklch(50% 0.17 27);
+  --bad-soft:    oklch(50% 0.17 27 / 0.08);
+  --tharpanam:   oklch(46% 0.06 260);
+  --focus:       oklch(52% 0.155 37);
+  --shadow:      oklch(30% 0.04 50 / 0.16);
+  --scrim:       oklch(15% 0.02 50 / 0.42);
+  --sky-bg-1:    oklch(24% 0.04 265);
+  --sky-bg-2:    oklch(14% 0.03 265);
+  --sky-line:    oklch(55% 0.05 265);
+  --sky-text:    oklch(90% 0.03 80);
+  --sky-asc:     oklch(80% 0.14 75);
+  --star:        oklch(97% 0.01 90);
+  --earth:       oklch(80% 0.09 230);
+
+  --planet-sun:     oklch(86% 0.15 85);
+  --planet-moon:    oklch(96% 0.012 270);
+  --planet-mercury: oklch(76% 0.02 80);
+  --planet-venus:   oklch(96% 0.04 90);
+  --planet-mars:    oklch(64% 0.17 37);
+  --planet-jupiter: oklch(78% 0.1 65);
+  --planet-saturn:  oklch(84% 0.09 88);
+  --planet-rahu:    oklch(66% 0.11 290);
+  --planet-ketu:    oklch(64% 0.07 50);
+
+  --font-display: "Libre Baskerville", "Noto Serif Tamil", "Noto Serif Telugu", "Noto Serif Kannada",
+    "Noto Serif Malayalam", "Noto Serif Devanagari", Georgia, serif;
+  --font-body: "Hind", "Hind Madurai", "Hind Guntur", "Hind Mysuru", "Manjari", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-md: 1.1875rem;
+  --text-lg: 1.375rem;
+  --text-xl: 1.75rem;
+  --text-hero: clamp(4.25rem, 18vw, 6rem);
+
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+
+  --radius: 14px;
+  --radius-sm: 9px;
+  --radius-pill: 999px;
+  --bar-h: 3.5rem;
+  --tab-h: 4.25rem;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --dur: 180ms;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --paper:       oklch(19.5% 0.016 55);
+  --paper-2:     oklch(24% 0.019 55);
+  --paper-3:     oklch(29% 0.022 55);
+  --rule:        oklch(33% 0.022 55);
+  --rule-2:      oklch(45% 0.03 60);
+  --ink:         oklch(94% 0.018 80);
+  --ink-2:       oklch(86% 0.02 78);
+  --muted:       oklch(70% 0.025 70);
+  --accent:      oklch(71% 0.135 45);
+  --accent-ink:  oklch(19.5% 0.016 55);
+  --accent-soft: oklch(71% 0.135 45 / 0.14);
+  --turmeric:    oklch(81% 0.13 78);
+  --turmeric-soft: oklch(81% 0.13 78 / 0.16);
+  --good:        oklch(77% 0.1 160);
+  --good-soft:   oklch(77% 0.1 160 / 0.1);
+  --bad:         oklch(72% 0.14 28);
+  --bad-soft:    oklch(72% 0.14 28 / 0.11);
+  --tharpanam:   oklch(76% 0.07 260);
+  --focus:       oklch(81% 0.13 78);
+  --shadow:      oklch(5% 0.01 50 / 0.5);
+  color-scheme: dark;
+}

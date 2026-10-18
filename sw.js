@@ -1,45 +1,80 @@
-// Service worker: keeps the chart generator working offline once it has been opened.
-//
-// App files are served NETWORK-FIRST: when online you always get the latest
-// index.html / script.js / style.css (and the cache is refreshed), and only when the
-// network fails does the cached copy answer. The earlier cache-first strategy meant an
-// installed copy kept serving its first-ever version forever.
-//
-// Web fonts (Google Fonts CSS + font files) are cached on first use, cache-first, since
-// a given font URL never changes. Everything else cross-origin (the place lookup) goes
-// straight to the network.
-//
-// Bump CACHE_VERSION whenever the APP_SHELL list itself changes.
-const CACHE_VERSION = "v3";
-const APP_CACHE = `vedic-chart-app-${CACHE_VERSION}`;
-const FONT_CACHE = "vedic-chart-fonts-v1";
+// Service worker for the web version (the Android app bundles everything itself).
+// App files are network-first so updates arrive; the cache answers when offline.
+// Bump CACHE_VERSION whenever this file list changes.
+const CACHE_VERSION = "aarush-v1";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./tokens.css",
-  "./style.css",
-  "./script.js",
-  "./astronomy.min.js",
   "./manifest.json",
   "./icon-192.png",
   "./icon-512.png",
   "./icon-512-maskable.png",
-  "./apple-touch-icon.png"
+  "./apple-touch-icon.png",
+  "./css/app.css",
+  "./css/fonts.css",
+  "./css/tokens.css",
+  "./js/alarms.js",
+  "./js/app.js",
+  "./js/astro.js",
+  "./js/festivals.js",
+  "./js/format.js",
+  "./js/i18n/en.js",
+  "./js/i18n/hi.js",
+  "./js/i18n/index.js",
+  "./js/i18n/kn.js",
+  "./js/i18n/ml.js",
+  "./js/i18n/sa.js",
+  "./js/i18n/sanskrit.js",
+  "./js/i18n/ta.js",
+  "./js/i18n/te.js",
+  "./js/icons.js",
+  "./js/jathagam-data.js",
+  "./js/native.js",
+  "./js/panchang.js",
+  "./js/sankalpam.js",
+  "./js/store.js",
+  "./js/translit.js",
+  "./js/vendor/astronomy.min.js",
+  "./js/views/alarms.js",
+  "./js/views/calendar.js",
+  "./js/views/jathagam.js",
+  "./js/views/sankalpam.js",
+  "./js/views/settings.js",
+  "./js/views/today.js",
+  "./fonts/hind-devanagari-400-normal.woff2",
+  "./fonts/hind-devanagari-600-normal.woff2",
+  "./fonts/hind-guntur-telugu-400-normal.woff2",
+  "./fonts/hind-guntur-telugu-600-normal.woff2",
+  "./fonts/hind-latin-400-normal.woff2",
+  "./fonts/hind-latin-600-normal.woff2",
+  "./fonts/hind-latin-ext-400-normal.woff2",
+  "./fonts/hind-latin-ext-600-normal.woff2",
+  "./fonts/hind-madurai-tamil-400-normal.woff2",
+  "./fonts/hind-madurai-tamil-600-normal.woff2",
+  "./fonts/hind-mysuru-kannada-400-normal.woff2",
+  "./fonts/hind-mysuru-kannada-600-normal.woff2",
+  "./fonts/libre-baskerville-latin-400-normal.woff2",
+  "./fonts/libre-baskerville-latin-700-normal.woff2",
+  "./fonts/libre-baskerville-latin-ext-400-normal.woff2",
+  "./fonts/libre-baskerville-latin-ext-700-normal.woff2",
+  "./fonts/manjari-malayalam-400-normal.woff2",
+  "./fonts/manjari-malayalam-700-normal.woff2",
+  "./fonts/noto-serif-devanagari-devanagari-600-normal.woff2",
+  "./fonts/noto-serif-kannada-kannada-600-normal.woff2",
+  "./fonts/noto-serif-malayalam-malayalam-600-normal.woff2",
+  "./fonts/noto-serif-tamil-tamil-600-normal.woff2",
+  "./fonts/noto-serif-telugu-telugu-600-normal.woff2"
 ];
-const FONT_HOSTS = ["fonts.googleapis.com", "fonts.gstatic.com"];
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(APP_CACHE).then((cache) => cache.addAll(APP_SHELL))
-  );
+  event.waitUntil(caches.open(CACHE_VERSION).then((cache) => cache.addAll(APP_SHELL)));
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
-  const keep = [APP_CACHE, FONT_CACHE];
   event.waitUntil(
     caches.keys()
-      .then((names) => Promise.all(names.filter((n) => !keep.includes(n)).map((n) => caches.delete(n))))
+      .then((names) => Promise.all(names.filter((n) => n !== CACHE_VERSION).map((n) => caches.delete(n))))
       .then(() => self.clients.claim())
   );
 });
@@ -48,29 +83,13 @@ self.addEventListener("fetch", (event) => {
   const request = event.request;
   if (request.method !== "GET") return;
   const url = new URL(request.url);
-
-  if (FONT_HOSTS.includes(url.hostname)) {
-    event.respondWith(
-      caches.open(FONT_CACHE).then((cache) =>
-        cache.match(request).then((cached) =>
-          cached || fetch(request).then((response) => {
-            if (response.ok || response.type === "opaque") cache.put(request, response.clone());
-            return response;
-          })
-        )
-      )
-    );
-    return;
-  }
-
-  if (url.origin !== self.location.origin) return;
-
+  if (url.origin !== self.location.origin) return; // place search etc. go straight to the network
   event.respondWith(
     fetch(request)
       .then((response) => {
         if (response.ok) {
           const copy = response.clone();
-          caches.open(APP_CACHE).then((cache) => cache.put(request, copy));
+          caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
         }
         return response;
       })
