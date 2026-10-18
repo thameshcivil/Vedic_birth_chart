@@ -41,6 +41,8 @@ const APP_SHELL = [
   "./js/views/sankalpam.js",
   "./js/views/settings.js",
   "./js/views/today.js",
+  "./js/views/rasi.js",
+  "./js/glyphs.js",
   "./fonts/hind-devanagari-400-normal.woff2",
   "./fonts/hind-devanagari-600-normal.woff2",
   "./fonts/hind-guntur-telugu-400-normal.woff2",
