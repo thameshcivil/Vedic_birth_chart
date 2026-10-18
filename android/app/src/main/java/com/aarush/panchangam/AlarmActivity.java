@@ -22,9 +22,9 @@ import java.util.Date;
 /** Full-screen alarm shown over the lock screen, with Snooze and Dismiss. */
 public class AlarmActivity extends Activity {
 
-    private static final int PAPER = Color.parseColor("#F6EFE3");
-    private static final int INK = Color.parseColor("#2A211B");
-    private static final int ACCENT = Color.parseColor("#B4462B");
+    private static final int PAPER = Color.parseColor("#1F092F");
+    private static final int INK = Color.parseColor("#FBF4E6");
+    private static final int ACCENT = Color.parseColor("#FBC044");
 
     @SuppressWarnings("deprecation")
     @Override
@@ -114,7 +114,7 @@ public class AlarmActivity extends Activity {
         bg.setCornerRadius(28 * dp);
         if (primary) {
             bg.setColor(ACCENT);
-            b.setTextColor(Color.WHITE);
+            b.setTextColor(PAPER);
         } else {
             bg.setColor(Color.TRANSPARENT);
             bg.setStroke((int) (1.5f * dp), INK);

@@ -179,7 +179,7 @@ function applyTheme() {
   const dark = theme === "dark" || (theme === "system" && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
   document.documentElement.dataset.theme = dark ? "dark" : "light";
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.content = dark ? "#1d1611" : "#f6efe3";
+  if (meta) meta.content = dark ? "#310e4d" : "#591771";
 }
 
 // ----- ⋮ menu -----

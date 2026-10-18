@@ -1,50 +1,88 @@
-/* Aarush Panchangam · theme "sheet almanac"
- * Inspo references: goodeggs-com (cream, terracotta, deep-green action), mooala-com
- * (Libre Baskerville over a humanist sans), bento-grid macrostructure.
- * Light: palm-leaf cream paper, iron-gall ink, kumkum terracotta, turmeric, temple green.
- * Dark: lamp-black brown with turmeric and terracotta.
- * Every colour and font in the app comes from these tokens. */
+/* Aarush Panchangam · theme "Kanjeevaram silk"
+ * Inspo reference: mixpotion-co (deep velvet purple ground, saturated jewel accents,
+ * light serif display). Read through a South Indian lens: silk-saree aubergine,
+ * temple-gold zari, rani pink, parrot green, peacock teal and marigold.
+ * Dark "Velvet" is the default look; light "Marigold" keeps the same jewels on
+ * a warm paper. Every colour and font in the app comes from these tokens. */
 
 :root,
 :root[data-theme="light"] {
-  --paper:       oklch(95.6% 0.021 80);
-  --paper-2:     oklch(98.6% 0.009 85);
-  --paper-3:     oklch(91.5% 0.03 78);
-  --rule:        oklch(86.5% 0.028 74);
-  --rule-2:      oklch(75% 0.035 68);
-  --ink:         oklch(24% 0.03 45);
-  --ink-2:       oklch(34% 0.03 48);
-  --muted:       oklch(48% 0.03 55);
-  --accent:      oklch(52% 0.155 37);      /* kumkum terracotta */
-  --accent-ink:  oklch(98.6% 0.009 85);
-  --accent-soft: oklch(52% 0.155 37 / 0.1);
-  --turmeric:    oklch(73% 0.15 72);
-  --turmeric-soft: oklch(80% 0.13 80 / 0.28);
-  --good:        oklch(41% 0.085 160);     /* temple-door green */
-  --good-soft:   oklch(41% 0.085 160 / 0.09);
-  --bad:         oklch(50% 0.17 27);
-  --bad-soft:    oklch(50% 0.17 27 / 0.08);
-  --tharpanam:   oklch(46% 0.06 260);
-  --focus:       oklch(52% 0.155 37);
-  --shadow:      oklch(30% 0.04 50 / 0.16);
-  --scrim:       oklch(15% 0.02 50 / 0.42);
-  --sky-bg-1:    oklch(24% 0.04 265);
-  --sky-bg-2:    oklch(14% 0.03 265);
-  --sky-line:    oklch(55% 0.05 265);
-  --sky-text:    oklch(90% 0.03 80);
-  --sky-asc:     oklch(80% 0.14 75);
+  --paper:       oklch(97% 0.028 88);
+  --paper-2:     oklch(99.3% 0.01 90);
+  --paper-3:     oklch(93% 0.045 85);
+  --page-bg:     radial-gradient(120% 60% at 100% 0%, oklch(92% 0.07 75 / 0.6), transparent 60%),
+                 radial-gradient(90% 50% at 0% 100%, oklch(90% 0.06 350 / 0.35), transparent 60%), var(--paper);
+  --rule:        oklch(88% 0.04 70);
+  --rule-2:      oklch(76% 0.07 60);
+  --ink:         oklch(23% 0.06 315);
+  --ink-2:       oklch(32% 0.06 315);
+  --muted:       oklch(48% 0.06 320);
+  --accent:      oklch(50% 0.22 352);      /* rani pink */
+  --accent-ink:  oklch(99% 0.01 90);
+  --accent-soft: oklch(50% 0.22 352 / 0.1);
+  --gold:        oklch(66% 0.15 75);
+  --turmeric:    oklch(78% 0.16 78);
+  --turmeric-soft: oklch(84% 0.14 85 / 0.35);
+  --good:        oklch(48% 0.14 145);      /* parrot green */
+  --good-soft:   oklch(48% 0.14 145 / 0.1);
+  --bad:         oklch(53% 0.2 28);
+  --bad-soft:    oklch(53% 0.2 28 / 0.09);
+  --tharpanam:   oklch(45% 0.1 230);
+  --focus:       oklch(50% 0.22 352);
+  --shadow:      oklch(30% 0.08 320 / 0.18);
+  --scrim:       oklch(15% 0.05 315 / 0.5);
+
+  --bar-bg:      linear-gradient(100deg, oklch(33% 0.14 305), oklch(45% 0.2 345) 70%, oklch(55% 0.2 20));
+  --bar-solid:   oklch(36% 0.15 315);
+  --bar-ink:     oklch(98% 0.02 90);
+  --bar-ink-2:   oklch(98% 0.02 90 / 0.72);
+  --zari:        oklch(80% 0.15 82);
+  --zari-2:      oklch(62% 0.14 70);
+  --tabs-bg:     oklch(26% 0.11 310);
+  --tabs-ink:    oklch(88% 0.04 320);
+  --tabs-on:     oklch(86% 0.16 85);
+  --card-edge:   oklch(78% 0.13 80);
+  --row-alt:     oklch(50% 0.22 352 / 0.07);
+
+  --day-kari:      oklch(84% 0.11 358);
+  --day-kavanam:   oklch(91% 0.11 82);
+  --day-sadharana: oklch(90% 0.07 190);
+  --day-muhurtham: oklch(84% 0.16 138);
+  --day-ink:       oklch(24% 0.06 315);
+  --day-small:     oklch(48% 0.2 352);
+  --today-ring:    oklch(50% 0.22 352);
+  --today-ink:     oklch(99% 0.01 90);
+
+  --sky-bg-1:    oklch(26% 0.09 300);
+  --sky-bg-2:    oklch(15% 0.06 295);
+  --sky-line:    oklch(58% 0.08 300);
+  --sky-text:    oklch(92% 0.03 85);
+  --sky-asc:     oklch(82% 0.15 80);
   --star:        oklch(97% 0.01 90);
   --earth:       oklch(80% 0.09 230);
 
   --planet-sun:     oklch(86% 0.15 85);
   --planet-moon:    oklch(96% 0.012 270);
-  --planet-mercury: oklch(76% 0.02 80);
+  --planet-mercury: oklch(78% 0.08 150);
   --planet-venus:   oklch(96% 0.04 90);
-  --planet-mars:    oklch(64% 0.17 37);
-  --planet-jupiter: oklch(78% 0.1 65);
-  --planet-saturn:  oklch(84% 0.09 88);
-  --planet-rahu:    oklch(66% 0.11 290);
-  --planet-ketu:    oklch(64% 0.07 50);
+  --planet-mars:    oklch(64% 0.19 30);
+  --planet-jupiter: oklch(80% 0.13 75);
+  --planet-saturn:  oklch(70% 0.1 260);
+  --planet-rahu:    oklch(66% 0.13 300);
+  --planet-ketu:    oklch(66% 0.09 45);
+
+  --glyph-dark:  oklch(24% 0.04 300);
+  --glyph-line:  oklch(28% 0.06 315);
+  --glyph-moon:  oklch(95% 0.03 90);
+  --glyph-red:   oklch(55% 0.21 25);
+  --glyph-gold:  oklch(80% 0.15 82);
+  --glyph-ash:   oklch(94% 0.01 80);
+  --glyph-sweet: oklch(92% 0.06 85);
+  --glyph-flame: oklch(70% 0.19 48);
+  --glyph-pink:  oklch(68% 0.18 355);
+  --glyph-good:  oklch(55% 0.15 145);
+  --glyph-copper: oklch(63% 0.13 50);
+  --glyph-water: oklch(65% 0.12 230);
 
   --font-display: "Libre Baskerville", "Noto Serif Tamil", "Noto Serif Telugu", "Noto Serif Kannada",
     "Noto Serif Malayalam", "Noto Serif Devanagari", Georgia, serif;
@@ -69,69 +107,57 @@
   --radius: 14px;
   --radius-sm: 9px;
   --radius-pill: 999px;
-  --bar-h: 3.5rem;
   --tab-h: 4.25rem;
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
   --dur: 180ms;
 
-  --bar-bg:      oklch(47% 0.15 36);
-  --bar-ink:     oklch(97% 0.02 80);
-  --bar-ink-2:   oklch(97% 0.02 80 / 0.72);
-  --tabs-bg:     oklch(91.5% 0.03 78);
-  --day-kari:      oklch(86% 0.07 25);
-  --day-kavanam:   oklch(94% 0.04 80);
-  --day-sadharana: oklch(93% 0.05 150);
-  --day-muhurtham: oklch(82% 0.11 145);
-  --day-small:   oklch(47% 0.15 36);
-  --glyph-dark:  oklch(26% 0.012 60);
-  --glyph-line:  oklch(30% 0.03 50);
-  --glyph-moon:  oklch(94% 0.02 90);
-  --glyph-red:   oklch(55% 0.19 28);
-  --glyph-gold:  oklch(78% 0.14 80);
-  --glyph-ash:   oklch(92% 0.01 80);
-  --glyph-sweet: oklch(90% 0.05 85);
-  --glyph-flame: oklch(70% 0.18 50);
-  --glyph-pink:  oklch(70% 0.13 0);
-  --glyph-good:  oklch(55% 0.12 150);
-  --glyph-copper: oklch(62% 0.12 50);
-  --glyph-water: oklch(65% 0.1 240);
   color-scheme: light;
 }
 
 :root[data-theme="dark"] {
-  --paper:       oklch(19.5% 0.016 55);
-  --paper-2:     oklch(24% 0.019 55);
-  --paper-3:     oklch(29% 0.022 55);
-  --rule:        oklch(33% 0.022 55);
-  --rule-2:      oklch(45% 0.03 60);
-  --ink:         oklch(94% 0.018 80);
-  --ink-2:       oklch(86% 0.02 78);
-  --muted:       oklch(70% 0.025 70);
-  --accent:      oklch(71% 0.135 45);
-  --accent-ink:  oklch(19.5% 0.016 55);
-  --accent-soft: oklch(71% 0.135 45 / 0.14);
-  --turmeric:    oklch(81% 0.13 78);
-  --turmeric-soft: oklch(81% 0.13 78 / 0.16);
-  --good:        oklch(77% 0.1 160);
-  --good-soft:   oklch(77% 0.1 160 / 0.1);
-  --bad:         oklch(72% 0.14 28);
-  --bad-soft:    oklch(72% 0.14 28 / 0.11);
-  --tharpanam:   oklch(76% 0.07 260);
-  --focus:       oklch(81% 0.13 78);
-  --shadow:      oklch(5% 0.01 50 / 0.5);
+  --paper:       oklch(20% 0.075 308);
+  --paper-2:     oklch(26% 0.09 310);
+  --paper-3:     oklch(32% 0.1 312);
+  --page-bg:     radial-gradient(110% 55% at 100% 0%, oklch(36% 0.16 345 / 0.55), transparent 60%),
+                 radial-gradient(100% 55% at 0% 100%, oklch(32% 0.12 280 / 0.6), transparent 65%), var(--paper);
+  --rule:        oklch(36% 0.09 312);
+  --rule-2:      oklch(48% 0.1 315);
+  --ink:         oklch(97% 0.02 85);
+  --ink-2:       oklch(91% 0.03 80);
+  --muted:       oklch(78% 0.06 320);
+  --accent:      oklch(84% 0.15 82);       /* temple gold */
+  --accent-ink:  oklch(22% 0.08 308);
+  --accent-soft: oklch(84% 0.15 82 / 0.14);
+  --gold:        oklch(84% 0.15 82);
+  --turmeric:    oklch(84% 0.15 82);
+  --turmeric-soft: oklch(84% 0.15 82 / 0.18);
+  --good:        oklch(84% 0.17 140);
+  --good-soft:   oklch(84% 0.17 140 / 0.12);
+  --bad:         oklch(76% 0.16 20);
+  --bad-soft:    oklch(76% 0.16 20 / 0.12);
+  --tharpanam:   oklch(80% 0.09 220);
+  --focus:       oklch(84% 0.15 82);
+  --shadow:      oklch(8% 0.05 300 / 0.55);
+  --scrim:       oklch(8% 0.05 300 / 0.6);
 
-  --bar-bg:      oklch(30% 0.06 40);
-  --bar-ink:     oklch(94% 0.02 80);
-  --bar-ink-2:   oklch(94% 0.02 80 / 0.7);
-  --tabs-bg:     oklch(24% 0.019 55);
-  --day-kari:      oklch(37% 0.08 25);
-  --day-kavanam:   oklch(27% 0.025 65);
-  --day-sadharana: oklch(30% 0.045 155);
-  --day-muhurtham: oklch(43% 0.09 150);
-  --day-small:   oklch(81% 0.13 78);
-  --glyph-dark:  oklch(14% 0.01 60);
-  --glyph-line:  oklch(82% 0.03 80);
+  --bar-bg:      linear-gradient(100deg, oklch(24% 0.1 300), oklch(36% 0.17 340) 75%, oklch(44% 0.18 15));
+  --bar-solid:   oklch(26% 0.11 305);
+  --tabs-bg:     oklch(16% 0.06 305);
+  --card-edge:   oklch(70% 0.13 80 / 0.55);
+  --row-alt:     oklch(100% 0 0 / 0.045);
+
+  --day-kari:      oklch(45% 0.17 358);
+  --day-kavanam:   oklch(54% 0.14 52);
+  --day-sadharana: oklch(40% 0.08 195);
+  --day-muhurtham: oklch(55% 0.15 140);
+  --day-ink:       oklch(98% 0.015 85);
+  --day-small:     oklch(88% 0.14 85);
+  --today-ring:    oklch(86% 0.15 82);
+  --today-ink:     oklch(22% 0.08 308);
+
+  --glyph-dark:  oklch(12% 0.03 300);
+  --glyph-line:  oklch(86% 0.04 85);
   color-scheme: dark;
 }

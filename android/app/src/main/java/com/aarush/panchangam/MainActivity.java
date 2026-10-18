@@ -43,11 +43,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         Window window = getWindow();
-        window.setStatusBarColor(Color.parseColor("#F6EFE3"));
-        window.setNavigationBarColor(Color.parseColor("#F6EFE3"));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
+        // Silk theme: deep aubergine bars with light system icons
+        window.setStatusBarColor(Color.parseColor("#310E4D"));
+        window.setNavigationBarColor(Color.parseColor("#1F092F"));
 
         webView = new WebView(this);
         setContentView(webView);
