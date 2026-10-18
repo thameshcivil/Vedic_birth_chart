@@ -1,0 +1,59 @@
+plugins {
+    id 'com.android.application'
+}
+
+// CI passes VERSION_CODE (the GitHub run number) so every build can install over the last
+def ciVersionCode = (System.getenv("VERSION_CODE") ?: "1") as int
+
+android {
+    namespace 'com.aarush.panchangam'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.aarush.panchangam"
+        minSdk 24
+        targetSdk 35
+        versionCode ciVersionCode
+        versionName "1.0.${ciVersionCode}"
+    }
+
+    signingConfigs {
+        release {
+            // Supplied by the build workflow: a key from repository secrets if set,
+            // otherwise a key kept in the workflow cache so updates install over each other
+            if (System.getenv("KEYSTORE_FILE")) {
+                storeFile file(System.getenv("KEYSTORE_FILE"))
+                storePassword System.getenv("KEYSTORE_PASSWORD")
+                keyAlias System.getenv("KEY_ALIAS")
+                keyPassword System.getenv("KEY_PASSWORD")
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig System.getenv("KEYSTORE_FILE") ? signingConfigs.release : signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    androidResources {
+        // Keep the web app's files (fonts, data) exactly as they are
+        noCompress += ['woff2', 'json', 'js', 'css', 'html']
+    }
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.12.1'
+    implementation 'androidx.core:core:1.13.1'
+}

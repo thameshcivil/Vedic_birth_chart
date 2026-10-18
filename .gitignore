@@ -1,0 +1,7 @@
+# Android build output and the web app copy made at build time
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/app/src/main/assets/www/
+node_modules/

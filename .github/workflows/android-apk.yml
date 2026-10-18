@@ -1,0 +1,130 @@
+name: Build Android APK
+
+# Every push to these branches builds a signed APK and publishes it as a
+# GitHub release ("Releases" on the repository page) that can be installed
+# straight from a phone.
+on:
+  push:
+    branches: [aarush-panchangam, main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      VERSION_CODE: ${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+
+      # Signing key. If the repository has the ANDROID_KEYSTORE_BASE64 secret (and its
+      # passwords), that key is used. Otherwise a key is generated once and kept in the
+      # workflow cache, so each new build installs over the previous one.
+      - name: Restore cached signing key
+        uses: actions/cache@v4
+        with:
+          path: ~/.aarush-signing
+          key: aarush-signing-key-v1
+
+      - name: Prepare signing key
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          K_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          K_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -n "${KEYSTORE_B64}" ]; then
+            echo "${KEYSTORE_B64}" | base64 -d > "$RUNNER_TEMP/release.jks"
+            {
+              echo "KEYSTORE_FILE=$RUNNER_TEMP/release.jks"
+              echo "KEYSTORE_PASSWORD=${KS_PASS}"
+              echo "KEY_ALIAS=${K_ALIAS}"
+              echo "KEY_PASSWORD=${K_PASS}"
+            } >> "$GITHUB_ENV"
+            echo "Using the key from repository secrets"
+          else
+            mkdir -p ~/.aarush-signing
+            if [ ! -f ~/.aarush-signing/ci.jks ]; then
+              keytool -genkeypair -v -keystore ~/.aarush-signing/ci.jks -storepass aarush-ci -keypass aarush-ci \
+                -alias aarush -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Aarush Panchangam"
+            fi
+            {
+              echo "KEYSTORE_FILE=$HOME/.aarush-signing/ci.jks"
+              echo "KEYSTORE_PASSWORD=aarush-ci"
+              echo "KEY_ALIAS=aarush"
+              echo "KEY_PASSWORD=aarush-ci"
+            } >> "$GITHUB_ENV"
+            echo "Using the cached CI key"
+          fi
+
+      - name: Copy the web app into the APK
+        run: bash android/scripts/copy-web.sh
+
+      - name: Build release APK
+        working-directory: android
+        run: |
+          set -o pipefail
+          gradle assembleRelease --no-daemon --stacktrace 2>&1 | tee "$RUNNER_TEMP/build.log"
+
+      - name: Rename APK
+        id: apk
+        run: |
+          name="Aarush-Panchangam-1.0.${VERSION_CODE}.apk"
+          cp android/app/build/outputs/apk/release/app-release.apk "$name"
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aarush-panchangam-apk
+          path: ${{ steps.apk.outputs.name }}
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "build-${VERSION_CODE}" "${{ steps.apk.outputs.name }}" \
+            --target "${GITHUB_SHA}" --prerelease \
+            --title "Aarush Panchangam 1.0.${VERSION_CODE}" \
+            --notes "Built from ${GITHUB_REF_NAME} at ${GITHUB_SHA::7}. On your phone: download the APK below, open it, and allow installing from this source if asked."
+
+      # Writes the outcome and the end of the build log to the build-status branch,
+      # so the result can be checked without opening the Actions page.
+      - name: Report status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          dir="$(mktemp -d)"
+          cd "$dir"
+          git init -q
+          git checkout -q -b build-status
+          {
+            echo "status: ${JOB_STATUS}"
+            echo "run: ${GITHUB_RUN_NUMBER}"
+            echo "branch: ${GITHUB_REF_NAME}"
+            echo "commit: ${GITHUB_SHA}"
+            echo "time: $(date -u +%FT%TZ)"
+          } > STATUS.txt
+          if [ -f "$RUNNER_TEMP/build.log" ]; then
+            grep -E "error:|warning:|FAILURE|BUILD|What went wrong|e: |> " "$RUNNER_TEMP/build.log" | head -n 200 > build-log-highlights.txt || true
+            tail -n 400 "$RUNNER_TEMP/build.log" > build-log-tail.txt
+          fi
+          git add -A
+          git -c user.name="aarush-ci" -c user.email="aarush-ci@users.noreply.github.com" commit -q -m "Build ${GITHUB_RUN_NUMBER}: ${JOB_STATUS}"
+          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" build-status

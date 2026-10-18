@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aarush Panchangam</string>
+    <string name="channel_alarms">Alarms</string>
+    <string name="channel_reminders">Panchangam reminders</string>
+    <string name="snooze">Snooze 10 min</string>
+    <string name="dismiss">Dismiss</string>
+</resources>
