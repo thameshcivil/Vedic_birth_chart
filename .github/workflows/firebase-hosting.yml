@@ -1,8 +1,8 @@
 # Publishes the web version of Aarush Panchangam to Firebase Hosting.
-# Runs only once these repository secrets exist (Settings → Secrets and variables → Actions):
-#   FIREBASE_PROJECT_ID       – the Firebase project ID, e.g. aarush-panchangam
-#   FIREBASE_SERVICE_ACCOUNT  – the full JSON key of a service account with the
-#                               "Firebase Hosting Admin" role in that project
+# Firebase project: aarush-panchangam (https://aarush-panchangam.web.app).
+# Runs only once this repository secret exists (Settings → Secrets and variables → Actions):
+#   FIREBASE_SERVICE_ACCOUNT  – the full JSON key of a service account of that project
+#                               (Project settings → Service accounts → Generate new private key)
 name: Firebase Hosting
 
 on:
@@ -21,11 +21,10 @@ jobs:
       - name: Check secrets
         id: check
         env:
-          PROJECT: ${{ secrets.FIREBASE_PROJECT_ID }}
           KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
-          if [ -n "$PROJECT" ] && [ -n "$KEY" ]; then echo "ready=true" >> "$GITHUB_OUTPUT";
-          else echo "ready=false" >> "$GITHUB_OUTPUT"; echo "::notice::Firebase secrets not set yet; skipping deploy."; fi
+          if [ -n "$KEY" ]; then echo "ready=true" >> "$GITHUB_OUTPUT";
+          else echo "ready=false" >> "$GITHUB_OUTPUT"; echo "::notice::FIREBASE_SERVICE_ACCOUNT secret not set yet; skipping deploy."; fi
 
       - uses: actions/checkout@v4
         if: steps.check.outputs.ready == 'true'
@@ -47,5 +46,5 @@ jobs:
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
+          projectId: ${{ vars.FIREBASE_PROJECT_ID || 'aarush-panchangam' }}
           channelId: live
