@@ -1,8 +1,11 @@
-# Publishes the web version of Aarush Panchangam to Firebase Hosting.
-# Firebase project: aarush-panchangam (https://aarush-panchangam.web.app).
-# Runs only once this repository secret exists (Settings → Secrets and variables → Actions):
-#   FIREBASE_SERVICE_ACCOUNT  – the full JSON key of a service account of that project
-#                               (Project settings → Service accounts → Generate new private key)
+# Publishes the web version of Aarush Panchangam to Firebase Hosting
+# (project aarush-panchangam → https://aarush-panchangam.web.app) on every push.
+#
+# Keyless: GitHub signs in to Google Cloud through Workload Identity Federation.
+# Only this repository (thameshcivil/Vedic_birth_chart) is allowed by the
+# provider's condition, and it acts as the service account
+# github-deployer@aarush-panchangam.iam.gserviceaccount.com, which has only
+# Firebase Hosting Admin, Service Usage Consumer and Firebase Viewer.
 name: Firebase Hosting
 
 on:
@@ -14,23 +17,17 @@ concurrency:
   group: firebase-hosting
   cancel-in-progress: true
 
+permissions:
+  contents: write
+  id-token: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Check secrets
-        id: check
-        env:
-          KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: |
-          if [ -n "$KEY" ]; then echo "ready=true" >> "$GITHUB_OUTPUT";
-          else echo "ready=false" >> "$GITHUB_OUTPUT"; echo "::notice::FIREBASE_SERVICE_ACCOUNT secret not set yet; skipping deploy."; fi
-
       - uses: actions/checkout@v4
-        if: steps.check.outputs.ready == 'true'
 
       - name: Collect the web app into public/
-        if: steps.check.outputs.ready == 'true'
         run: |
           mkdir -p public
           rsync -a \
@@ -40,11 +37,28 @@ jobs:
             ./ public/
           find public -type f | wc -l
 
-      - name: Deploy to Firebase Hosting (live)
-        if: steps.check.outputs.ready == 'true'
-        uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Sign in to Google Cloud (keyless)
+        uses: google-github-actions/auth@v2
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          projectId: ${{ vars.FIREBASE_PROJECT_ID || 'aarush-panchangam' }}
-          channelId: live
+          workload_identity_provider: projects/364669892420/locations/global/workloadIdentityPools/github/providers/repo
+          service_account: github-deployer@aarush-panchangam.iam.gserviceaccount.com
+          create_credentials_file: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Deploy to Firebase Hosting (live)
+        run: npx --yes firebase-tools@13 deploy --only hosting --project aarush-panchangam --non-interactive --message "${GITHUB_SHA::7}"
+
+      - name: Record the result on the build-status branch
+        if: always()
+        env:
+          RESULT: ${{ job.status }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git fetch origin build-status:build-status 2>/dev/null || true
+          git worktree add /tmp/bs build-status 2>/dev/null || { git worktree add -b build-status /tmp/bs; }
+          printf 'status: %s\ncommit: %s\ntime: %s\nurl: https://aarush-panchangam.web.app\n' "$RESULT" "$GITHUB_SHA" "$(date -u +%FT%TZ)" > /tmp/bs/HOSTING.txt
+          cd /tmp/bs && git add HOSTING.txt && git commit -qm "Hosting $RESULT ${GITHUB_SHA::7}" && git push -q origin build-status || true
