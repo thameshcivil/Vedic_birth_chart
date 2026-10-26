@@ -49,6 +49,7 @@ export function renderSettings(root) {
       <p><strong>${esc(brand())}</strong></p>
       <p class="small">${esc(t("aboutText"))}</p>
       <p class="muted small">${esc(t("version"))} ${esc(info.version || "web")}</p>
+      <div class="actions actions--left"><button class="btn btn--small btn--ghost" data-action="check-update">${esc(t("checkUpdates"))}</button></div>
     </section>`;
 }
 

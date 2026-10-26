@@ -12,6 +12,7 @@ import { esc, todayYmd, parseYmd, ymdKey } from "./format.js";
 import { icon } from "./icons.js";
 import { isAndroid, takeLaunchAction, share, copyText, printPage, appInfo } from "./native.js";
 import { refreshSchedule } from "./alarms.js";
+import { checkForUpdate } from "./update.js";
 import { renderToday, dayShareText, shiftDate } from "./views/today.js";
 import { renderCalendar, monthShareText } from "./views/calendar.js";
 import { renderSankalpam, bindSankalpamInputs, sankalpamText } from "./views/sankalpam.js";
@@ -242,6 +243,7 @@ function openAbout() {
       <p class="muted small">${esc(t("version"))} ${esc((info && info.version) || "1.0")}</p>
       <p>${esc(t("aboutText"))}</p>
       <p class="muted small">${esc(t("vakyamNote"))}</p>
+      <button class="btn btn--small btn--ghost" data-action="check-update">${esc(t("checkUpdates"))}</button>
     </div>`);
 }
 
@@ -265,6 +267,7 @@ function onClick(e) {
     case "menu-share": closeMenu(); shareCurrent(); break;
     case "menu-pdf": closeMenu(); printCurrent(); break;
     case "menu-about": closeMenu(); openAbout(); break;
+    case "check-update": app.closeSheet(); checkForUpdate(app, true); break;
     case "rasi-toggle-navamsa": closeMenu(); rasiState.navamsa = !rasiState.navamsa; app.render(); break;
     case "rasi-details": openRasiDetails(app); break;
     case "rasi-dasha": openRasiDasha(app); break;
@@ -350,6 +353,7 @@ window.aarushResume = () => {
   }
   app._lastToday = today;
   refreshSchedule(app.state.loc);
+  checkForUpdate(app);
 };
 
 function start() {
@@ -397,6 +401,7 @@ function start() {
   app.renderShell();
   app.render();
   refreshSchedule(app.state.loc);
+  setTimeout(() => checkForUpdate(app), 2500);
 
   if (!isAndroid && "serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
     window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));

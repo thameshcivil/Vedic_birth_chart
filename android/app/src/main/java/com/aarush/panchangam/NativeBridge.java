@@ -1,6 +1,8 @@
 package com.aarush.panchangam;
 
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +13,9 @@ import android.print.PrintManager;
 import android.provider.Settings;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import org.json.JSONObject;
 
@@ -134,5 +139,28 @@ public class NativeBridge {
             } catch (Exception ignored) {
             }
         });
+    }
+
+    /** Shows an "update available" notification; tapping it opens the download link. */
+    @JavascriptInterface
+    public void notifyUpdate(String title, String body, String url) {
+        try {
+            Context c = activity.getApplicationContext();
+            AlarmScheduler.createChannels(c);
+            Intent view = new Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            PendingIntent pi = PendingIntent.getActivity(c, 7001, view,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            Notification n = new NotificationCompat.Builder(c, AlarmScheduler.CHANNEL_REMINDERS)
+                    .setSmallIcon(R.drawable.ic_stat_aarush)
+                    .setContentTitle(title)
+                    .setContentText(body)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
+                    .setContentIntent(pi)
+                    .setAutoCancel(true)
+                    .build();
+            NotificationManagerCompat.from(c).notify(7001, n);
+        } catch (SecurityException ignored) {
+            // Notification permission not granted; the in-app message still shows.
+        }
     }
 }
