@@ -1,0 +1,51 @@
+# Publishes the web version of Aarush Panchangam to Firebase Hosting.
+# Runs only once these repository secrets exist (Settings → Secrets and variables → Actions):
+#   FIREBASE_PROJECT_ID       – the Firebase project ID, e.g. aarush-panchangam
+#   FIREBASE_SERVICE_ACCOUNT  – the full JSON key of a service account with the
+#                               "Firebase Hosting Admin" role in that project
+name: Firebase Hosting
+
+on:
+  push:
+    branches: [aarush-panchangam, main]
+  workflow_dispatch:
+
+concurrency:
+  group: firebase-hosting
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check secrets
+        id: check
+        env:
+          PROJECT: ${{ secrets.FIREBASE_PROJECT_ID }}
+          KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -n "$PROJECT" ] && [ -n "$KEY" ]; then echo "ready=true" >> "$GITHUB_OUTPUT";
+          else echo "ready=false" >> "$GITHUB_OUTPUT"; echo "::notice::Firebase secrets not set yet; skipping deploy."; fi
+
+      - uses: actions/checkout@v4
+        if: steps.check.outputs.ready == 'true'
+
+      - name: Collect the web app into public/
+        if: steps.check.outputs.ready == 'true'
+        run: |
+          mkdir -p public
+          rsync -a \
+            --exclude '.git' --exclude '.github' --exclude '.hallmark' --exclude 'android' \
+            --exclude 'tools' --exclude 'node_modules' --exclude '*.md' --exclude '.gitignore' \
+            --exclude 'public' --exclude 'firebase.json' --exclude '.firebaserc' \
+            ./ public/
+          find public -type f | wc -l
+
+      - name: Deploy to Firebase Hosting (live)
+        if: steps.check.outputs.ready == 'true'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
+          channelId: live

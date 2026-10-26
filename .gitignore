@@ -5,3 +5,5 @@ android/app/build/
 android/local.properties
 android/app/src/main/assets/www/
 node_modules/
+public/
+.firebase/
