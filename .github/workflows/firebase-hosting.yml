@@ -56,7 +56,7 @@ jobs:
           set -o pipefail
           npx --yes firebase-tools@13 deploy --only hosting --project aarush-panchangam --non-interactive --message "${GITHUB_SHA::7}" 2>&1 | tee /tmp/deploy.log
 
-      - name: Record the result on the build-status branch
+      - name: Record the result on the hosting-status branch
         if: always()
         env:
           RESULT: ${{ job.status }}
@@ -65,8 +65,8 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git fetch origin build-status:build-status 2>/dev/null || true
-          git worktree add /tmp/bs build-status 2>/dev/null || { git worktree add -b build-status /tmp/bs; }
+          git fetch origin hosting-status:hosting-status 2>/dev/null || true
+          git worktree add /tmp/bs hosting-status 2>/dev/null || git worktree add --orphan -b hosting-status /tmp/bs
           { printf 'status: %s\ncommit: %s\ntime: %s\nauth: %s\ndeploy: %s\nurl: https://aarush-panchangam.web.app\n\n' "$RESULT" "$GITHUB_SHA" "$(date -u +%FT%TZ)" "$AUTH" "$DEPLOY"
             tail -n 40 /tmp/deploy.log 2>/dev/null | grep -v -i -E 'token|secret|key' ; } > /tmp/bs/HOSTING.txt
-          cd /tmp/bs && git add HOSTING.txt && git commit -qm "Hosting $RESULT ${GITHUB_SHA::7}" && git push -q origin build-status || true
+          cd /tmp/bs && git add HOSTING.txt && git commit -qm "Hosting $RESULT ${GITHUB_SHA::7}" && git push -q origin hosting-status || true
