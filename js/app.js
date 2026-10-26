@@ -21,10 +21,11 @@ import { renderSettings, bindSettings, openLocationSheet } from "./views/setting
 import { renderJathagam, bindJathagam, hideTip, resetJathagamCache } from "./views/jathagam.js";
 import { renderVasthu, bindVasthu } from "./views/vasthu.js";
 import { renderMuhurtham, bindMuhurtham } from "./views/muhurtham.js";
+import { renderStars, bindStars } from "./views/stars.js";
 import { renderRasi, bindRasi, rasiShareText, rasiState, openRasiDetails, openRasiDasha } from "./views/rasi.js";
 
 const TABS = [
-  ["today", "panchangam"], ["vasthu", "vasthu"], ["muhurtham", "muhurtham"], ["sankalpam", "sankalpam"], ["reminders", "reminders"],
+  ["today", "panchangam"], ["vasthu", "vasthu"], ["muhurtham", "muhurtham"], ["stars", "stars"], ["sankalpam", "sankalpam"], ["reminders", "reminders"],
   ["alarms", "alarms"], ["stopwatch", "stopwatch"], ["jathagam", "jathagam"]
 ];
 const SUBPAGES = { calendar: null, rasi: "rasiChartMenu", settings: "settings" };
@@ -106,6 +107,7 @@ const app = {
       else if (route === "rasi") renderRasi(root, this);
       else if (route === "vasthu") renderVasthu(root, this);
       else if (route === "muhurtham") renderMuhurtham(root, this);
+      else if (route === "stars") renderStars(root, this);
     } catch (e) {
       root.innerHTML = `<p class="notice">${esc(String(e && e.message || e))}</p>`;
       console.error(e);
@@ -385,6 +387,7 @@ function start() {
   bindRasi(app.views.rasi, app);
   bindVasthu(app.views.vasthu, app);
   bindMuhurtham(app.views.muhurtham, app);
+  bindStars(app.views.stars, app);
   bindSwipe();
   document.getElementById("datepicker").addEventListener("change", (e) => {
     const d = parseYmd(e.target.value);

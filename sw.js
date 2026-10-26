@@ -1,7 +1,7 @@
 // Service worker for the web version (the Android app bundles everything itself).
 // App files are network-first so updates arrive; the cache answers when offline.
 // Bump CACHE_VERSION whenever this file list changes.
-const CACHE_VERSION = "aarush-v7";
+const CACHE_VERSION = "aarush-v8";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -61,6 +61,8 @@ const APP_SHELL = [
   "./js/vasthu.js",
   "./js/muhurtham.js",
   "./js/update.js",
+  "./js/nakshatradays.js",
+  "./js/views/stars.js",
   "./js/views/muhurtham.js",
   "./js/views/daycards.js",
   "./js/glyphs.js",
