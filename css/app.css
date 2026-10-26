@@ -30,9 +30,10 @@ button { cursor: pointer; }
 .block { display: block; }
 .mono { font-variant-numeric: tabular-nums; }
 
-/* ----- App bar ----- */
+/* ----- App bar + tab row: one block pinned to the top while the page scrolls ----- */
+.topbar { position: sticky; top: 0; z-index: 20; }
 .appbar {
-  position: sticky; top: 0; z-index: 20;
+  position: relative; z-index: 2;
   display: flex; align-items: center; gap: var(--space-2xs);
   min-height: var(--bar-h);
   padding: env(safe-area-inset-top) var(--space-3xs) 0 var(--space-xs);
@@ -68,7 +69,7 @@ button { cursor: pointer; }
 
 /* ----- Top tab strip ----- */
 .toptabs {
-  position: sticky; top: calc(var(--bar-h) + env(safe-area-inset-top)); z-index: 19;
+  position: relative; z-index: 1;
   display: flex; gap: var(--space-3xs); overflow-x: auto; scrollbar-width: none;
   padding: 6px var(--space-2xs) 0;
   background: var(--tabs-bg);
