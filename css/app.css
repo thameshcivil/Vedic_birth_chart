@@ -246,6 +246,8 @@ button { cursor: pointer; }
 .vrows div { display: flex; justify-content: space-between; gap: var(--space-sm); padding: 0.35rem 0; border-top: 1px dashed var(--rule); font-size: var(--text-sm); }
 .vrows dt { color: var(--accent); font-weight: 700; }
 .vrows dd { margin: 0; text-align: right; color: var(--ink); }
+.vrows div.is-wide { display: block; background: var(--turmeric-soft); margin: 0 calc(-1 * var(--space-sm)); padding: 0.5rem var(--space-sm); border-top: 0; }
+.vrows div.is-wide dd { text-align: left; font-weight: 600; margin-top: 0.15rem; }
 .vcard__actions { display: flex; gap: var(--space-2xs); justify-content: flex-end; flex-wrap: wrap; padding: var(--space-xs) var(--space-sm) var(--space-sm); }
 .vnote { margin-top: var(--space-sm); }
 
