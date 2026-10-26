@@ -57,7 +57,14 @@ export function dayCard(d, today, loc, opts) {
   const moonText = d.moonAtStart === d.moonAtEnd ? term("rasi")[d.moonAtStart] : `${term("rasi")[d.moonAtStart]} → ${term("rasi")[d.moonAtEnd]}`;
   const clashes = [d.clash.rahu && "clashRahu", d.clash.yama && "clashYama", d.clash.gulikai && "clashGulikai"].filter(Boolean);
   const paksha = d.tithi < 15 ? "waxingDay" : "waningDay";
+  // Nalla neram of the day: good Gowri windows clear of Rahu kalam, Yamagandam and Gulikai
+  const slot = ([a, b]) => `<span class="nslot">${esc(fmtRange(a, b, tz, ref))}</span>`;
+  const daySlots = d.p.nallaNeram.filter(([a]) => a < +d.p.sunset);
+  const nightSlots = d.p.nallaNeram.filter(([a]) => a >= +d.p.sunset);
+  const nalla = (daySlots.length ? `<span class="pline"><em>${esc(t("day"))}</em> ${daySlots.map(slot).join(" ")}</span>` : "") +
+    (nightSlots.length ? `<span class="pline"><em>${esc(t("night"))}</em> ${nightSlots.map(slot).join(" ")}</span>` : "") || "—";
   const rows = [
+    [t("nallaNeram"), nalla, true, "is-wide is-good"],
     [t("moonPhaseDays"), moonDaysText(d.moon).map((s) => `<span class="pline">${esc(s)}</span>`).join(""), true, "is-wide"],
     [t("tithi"), `${tithiName(d.tithi)} · ${t(paksha)}`],
     [t("nakshatram"), term("nakshatra")[d.nakshatra]],

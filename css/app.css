@@ -248,6 +248,11 @@ button { cursor: pointer; }
 .vrows dd { margin: 0; text-align: right; color: var(--ink); }
 .vrows div.is-wide { display: block; background: var(--turmeric-soft); margin: 0 calc(-1 * var(--space-sm)); padding: 0.5rem var(--space-sm); border-top: 0; }
 .vrows div.is-wide dd { text-align: left; font-weight: 600; margin-top: 0.15rem; }
+.vrows div.is-wide.is-good { background: var(--good-soft); }
+.vrows div.is-good dt { color: var(--good); }
+.vrows div.is-good .pline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.4rem; margin-top: 0.2rem; }
+.vrows div.is-good em { font-style: normal; font-weight: 700; color: var(--muted); font-size: var(--text-xs); min-width: 2.6rem; }
+.nslot { display: inline-block; white-space: nowrap; padding: 0.05rem 0.5rem; border-radius: var(--radius-pill); background: var(--paper-2); border: 1px solid var(--good); color: var(--good); font-weight: 700; font-size: var(--text-sm); }
 .vcard__actions { display: flex; gap: var(--space-2xs); justify-content: flex-end; flex-wrap: wrap; padding: var(--space-xs) var(--space-sm) var(--space-sm); }
 .vnote { margin-top: var(--space-sm); }
 
