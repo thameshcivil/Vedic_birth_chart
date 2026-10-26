@@ -38,6 +38,7 @@ jobs:
           find public -type f | wc -l
 
       - name: Sign in to Google Cloud (keyless)
+        id: auth
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/364669892420/locations/global/workloadIdentityPools/github/providers/repo
@@ -49,16 +50,23 @@ jobs:
           node-version: 20
 
       - name: Deploy to Firebase Hosting (live)
-        run: npx --yes firebase-tools@13 deploy --only hosting --project aarush-panchangam --non-interactive --message "${GITHUB_SHA::7}"
+        id: deploy
+        shell: bash
+        run: |
+          set -o pipefail
+          npx --yes firebase-tools@13 deploy --only hosting --project aarush-panchangam --non-interactive --message "${GITHUB_SHA::7}" 2>&1 | tee /tmp/deploy.log
 
       - name: Record the result on the build-status branch
         if: always()
         env:
           RESULT: ${{ job.status }}
+          AUTH: ${{ steps.auth.outcome }}
+          DEPLOY: ${{ steps.deploy.outcome }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
           git fetch origin build-status:build-status 2>/dev/null || true
           git worktree add /tmp/bs build-status 2>/dev/null || { git worktree add -b build-status /tmp/bs; }
-          printf 'status: %s\ncommit: %s\ntime: %s\nurl: https://aarush-panchangam.web.app\n' "$RESULT" "$GITHUB_SHA" "$(date -u +%FT%TZ)" > /tmp/bs/HOSTING.txt
+          { printf 'status: %s\ncommit: %s\ntime: %s\nauth: %s\ndeploy: %s\nurl: https://aarush-panchangam.web.app\n\n' "$RESULT" "$GITHUB_SHA" "$(date -u +%FT%TZ)" "$AUTH" "$DEPLOY"
+            tail -n 40 /tmp/deploy.log 2>/dev/null | grep -v -i -E 'token|secret|key' ; } > /tmp/bs/HOSTING.txt
           cd /tmp/bs && git add HOSTING.txt && git commit -qm "Hosting $RESULT ${GITHUB_SHA::7}" && git push -q origin build-status || true
