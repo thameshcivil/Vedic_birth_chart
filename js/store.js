@@ -32,6 +32,7 @@ export const DEFAULT_SETTINGS = {
   theme: "light",           // system | light | dark
   location: null,           // { name, lat, lon, tz, source: gps|search|manual|default }
   sankalpam: { type: "shubham", name: "", gothram: "", salutation: "", region: "auto", tharpanam: "tila", script: "native" },
+  vasthuOwner: { chandra: null, surya: null },
   onboarded: false
 };
 

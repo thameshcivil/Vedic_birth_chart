@@ -18,10 +18,11 @@ import { renderSankalpam, bindSankalpamInputs, sankalpamText } from "./views/san
 import { renderAlarms, handleAlarmAction, handleAlarmToggle } from "./views/alarms.js";
 import { renderSettings, bindSettings, openLocationSheet } from "./views/settings.js";
 import { renderJathagam, bindJathagam, hideTip, resetJathagamCache } from "./views/jathagam.js";
+import { renderVasthu, bindVasthu } from "./views/vasthu.js";
 import { renderRasi, bindRasi, rasiShareText, rasiState, openRasiDetails, openRasiDasha } from "./views/rasi.js";
 
 const TABS = [
-  ["today", "panchangam"], ["sankalpam", "sankalpam"], ["reminders", "reminders"],
+  ["today", "panchangam"], ["vasthu", "vasthu"], ["sankalpam", "sankalpam"], ["reminders", "reminders"],
   ["alarms", "alarms"], ["stopwatch", "stopwatch"], ["jathagam", "jathagam"]
 ];
 const SUBPAGES = { calendar: null, rasi: "rasiChartMenu", settings: "settings" };
@@ -101,6 +102,7 @@ const app = {
       else if (route === "settings") renderSettings(root, this);
       else if (route === "jathagam") renderJathagam(root, this);
       else if (route === "rasi") renderRasi(root, this);
+      else if (route === "vasthu") renderVasthu(root, this);
     } catch (e) {
       root.innerHTML = `<p class="notice">${esc(String(e && e.message || e))}</p>`;
       console.error(e);
@@ -375,6 +377,7 @@ function start() {
   bindSettings(app.views.settings, app);
   bindJathagam(app.views.jathagam, app);
   bindRasi(app.views.rasi, app);
+  bindVasthu(app.views.vasthu, app);
   bindSwipe();
   document.getElementById("datepicker").addEventListener("change", (e) => {
     const d = parseYmd(e.target.value);
